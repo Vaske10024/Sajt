@@ -8,16 +8,23 @@
     <title>Vasilije Stanković - Software Engineer & Educator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #0f1419;
             --secondary: #00ff88;
             --accent: #00cc70;
-            --text: #e0e0e0;
+            --text: #f5f5f5;
             --container: min(90%, 1200px);
             --shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
             --light-bg: #f0f0f0;
             --light-text: #333;
+            --hacker-bg: #000;
+            --hacker-text: #00ff00;
+            --hacker-accent: #ffa500;
+            --glitch-red: #ff0000;
+            --glitch-blue: #00f0ff;
+            --glitch-green: #00ff00;
         }
 
         * {
@@ -25,6 +32,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
         }
 
         body {
@@ -40,7 +48,57 @@
             color: var(--light-text);
         }
 
-        /* Loader */
+        body.hacker-mode {
+            background: var(--hacker-bg);
+            color: var(--hacker-text);
+            font-family: 'Fira Code', monospace;
+        }
+
+        body.hacker-mode * {
+            font-family: 'Fira Code', monospace !important;
+        }
+
+        body.glitch-mode {
+            background: #111;
+            color: var(--glitch-green);
+            animation: glitch-flicker 3s infinite;
+        }
+
+        body.glitch-mode * {
+            position: relative;
+            animation: glitch-text 1s infinite alternate;
+        }
+
+        body.glitch-mode .card,
+        body.glitch-mode .section {
+            animation: glitch-skew 2s infinite;
+        }
+
+        body.glitch-mode .hero,
+        body.glitch-mode .navbar,
+        body.glitch-mode footer {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--glitch-green);
+        }
+
+        body.glitch-mode::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                rgba(0, 0, 0, 0.1) 0,
+                rgba(0, 0, 0, 0.1) 2px,
+                transparent 2px,
+                transparent 4px
+            );
+            pointer-events: none;
+            z-index: 999;
+            animation: flicker 0.1s infinite;
+        }
+
         .loader {
             position: fixed;
             top: 0;
@@ -77,22 +135,82 @@
             animation: fadeIn 1s ease infinite alternate;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .hacker-loader, .glitch-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9998;
+            font-family: 'Fira Code', monospace;
         }
 
-        @keyframes scaleIn {
-            0% { transform: scale(0); }
-            100% { transform: scale(1); }
+        .hacker-loader {
+            background: var(--hacker-bg);
+            color: var(--hacker-text);
         }
 
-        @keyframes fadeIn {
-            0% { opacity: 0.5; }
-            100% { opacity: 1; }
+        .glitch-loader {
+            background: #000;
+            color: var(--glitch-green);
         }
 
-        /* Navigacija */
+        .hacker-loader.active, .glitch-loader.active {
+            display: flex;
+        }
+
+        .hacker-loader-text, .glitch-loader-text {
+            font-size: 1.5rem;
+            animation: typing 2s steps(40) infinite;
+        }
+
+        .glitch-loader-text {
+            animation: glitch-text 0.5s infinite;
+        }
+
+        .terminal {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            width: 300px;
+            background: var(--hacker-bg);
+            border: 1px solid var(--hacker-text);
+            border-radius: 5px;
+            padding: 0.5rem;
+            display: none;
+            flex-direction: column;
+            z-index: 1001;
+            color: var(--hacker-text);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .terminal.active {
+            display: flex;
+        }
+
+        .terminal-input {
+            background: none;
+            border: none;
+            color: var(--hacker-text);
+            font-family: 'Fira Code', monospace;
+            width: 100%;
+            outline: none;
+        }
+
+        .terminal-output {
+            max-height: 150px;
+            overflow-y: auto;
+            margin-bottom: 0.5rem;
+        }
+
+        .terminal-output p {
+            margin: 0.2rem 0;
+        }
+
         .navbar {
             position: fixed;
             top: 0;
@@ -110,12 +228,18 @@
             transform: translateY(0);
         }
 
+        body.hacker-mode .navbar {
+            background: var(--hacker-bg);
+            border-bottom: 1px solid var(--hacker-text);
+        }
+
         .nav-content {
             max-width: var(--container);
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 1rem;
         }
 
         .nav-logo {
@@ -123,6 +247,10 @@
             color: var(--secondary);
             font-weight: 700;
             transition: transform 0.3s ease;
+        }
+
+        body.hacker-mode .nav-logo {
+            color: var(--hacker-text);
         }
 
         .nav-logo:hover {
@@ -135,12 +263,26 @@
             list-style: none;
         }
 
+        body.hacker-mode .nav-menu {
+            gap: 1rem;
+        }
+
         .nav-menu a {
             color: var(--text);
             text-decoration: none;
             font-weight: 500;
             position: relative;
             transition: color 0.3s ease;
+        }
+
+        body.hacker-mode .nav-menu a {
+            color: var(--hacker-text);
+            text-transform: lowercase;
+        }
+
+        body.hacker-mode .nav-menu a::before {
+            content: '> ';
+            color: var(--hacker-accent);
         }
 
         .nav-menu a::after {
@@ -154,15 +296,23 @@
             transition: width 0.3s ease;
         }
 
-        .nav-menu a:hover {
+        .nav-menu a:hover, .nav-menu a:focus {
             color: var(--secondary);
+            outline: none;
+        }
+
+        body.hacker-mode .nav-menu a:hover, body.hacker-mode .nav-menu a:focus {
+            color: var(--hacker-accent);
         }
 
         .nav-menu a:hover::after {
             width: 100%;
         }
 
-        /* Hamburger meni */
+        body.hacker-mode .nav-menu a::after {
+            background: var(--hacker-accent);
+        }
+
         .hamburger {
             display: none;
             flex-direction: column;
@@ -177,24 +327,48 @@
             transition: all 0.3s ease;
         }
 
-        .nav-menu.active {
-            transform: translateX(0);
+        body.hacker-mode .hamburger span {
+            background: var(--hacker-text);
         }
 
-        /* Theme Toggle */
-        .theme-toggle {
+        .theme-toggle, .language-toggle {
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: var(--secondary);
             padding: 0.5rem;
             transition: transform 0.3s ease;
+            background: none;
+            border: none;
         }
 
-        .theme-toggle:hover {
+        body.hacker-mode .theme-toggle, body.hacker-mode .language-toggle {
+            color: var(--hacker-text);
+        }
+
+        .theme-toggle:hover, .language-toggle:hover {
             transform: scale(1.1);
+            outline: none;
         }
 
-        /* Hero Sekcija */
+        body.hacker-mode .theme-toggle:hover, body.hacker-mode .language-toggle:hover {
+            color: var(--hacker-accent);
+        }
+
+        .hacker-toggle {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            color: var(--secondary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            z-index: 1000;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .hacker-toggle:hover {
+            color: var(--accent);
+        }
+
         .hero {
             position: relative;
             min-height: 100vh;
@@ -205,14 +379,25 @@
             background: linear-gradient(to bottom, #0f1e2a, #1a1a2f);
         }
 
-        #hero-canvas {
+        body.hacker-mode .hero {
+            background: var(--hacker-bg);
+        }
+
+        #hero-canvas, #matrix-canvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 0;
-            background: transparent;
+        }
+
+        #matrix-canvas {
+            display: none;
+        }
+
+        body.glitch-mode #matrix-canvas.active {
+            display: block;
         }
 
         .hero-content {
@@ -223,6 +408,10 @@
             z-index: 1;
         }
 
+        body.hacker-mode .hero-content {
+            text-align: left;
+        }
+
         .hero .name {
             font-size: 4.5rem;
             color: var(--secondary);
@@ -230,13 +419,23 @@
             animation: fadeInDown 1s ease;
         }
 
+        body.hacker-mode .hero .name {
+            font-size: 2.5rem;
+            color: var(--hacker-text);
+            animation: typing 2s steps(30);
+        }
+
         .hero p {
             font-size: 1.8rem;
             max-width: 700px;
             margin: 0 auto 2rem;
-            animation: fadeInUp 1s ease 0.5s;
+            animation: fadeInUp 1s ease 0.5s forwards;
             opacity: 0;
-            animation-fill-mode: forwards;
+        }
+
+        body.hacker-mode .hero p {
+            font-size: 1.2rem;
+            animation: typing 2s steps(40) 0.5s forwards;
         }
 
         .profile-img {
@@ -246,17 +445,30 @@
             border: 6px solid var(--secondary);
             margin-bottom: 2rem;
             animation: float 3s ease-in-out infinite, zoomIn 1s ease;
+            loading: lazy;
         }
 
-        /* Kontakt Bar */
+        body.hacker-mode .profile-img {
+            display: none;
+        }
+
+        body.glitch-mode .profile-img {
+            filter: url(#glitch-filter);
+        }
+
         .contact-bar {
             display: flex;
             gap: 2rem;
             justify-content: center;
             flex-wrap: wrap;
-            animation: fadeInUp 1s ease 1s;
+            animation: fadeInUp 1s ease 1s forwards;
             opacity: 0;
-            animation-fill-mode: forwards;
+        }
+
+        body.hacker-mode .contact-bar {
+            justify-content: flex-start;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
         .contact-item {
@@ -269,18 +481,33 @@
             transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
         }
 
+        body.hacker-mode .contact-item {
+            background: none;
+            padding: 0;
+            color: var(--hacker-text);
+        }
+
         .contact-item:hover {
             transform: translateY(-5px) scale(1.05);
             background: rgba(0,255,136,0.1);
             box-shadow: 0 5px 15px rgba(0,255,136,0.2);
         }
 
-        /* Main Content */
+        body.hacker-mode .contact-item:hover {
+            transform: none;
+            background: none;
+            color: var(--hacker-accent);
+        }
+
         .container {
             max-width: var(--container);
             margin: 0 auto;
             padding: 4rem 1rem;
             perspective: 1000px;
+        }
+
+        body.hacker-mode .container {
+            padding: 2rem 1rem;
         }
 
         .section {
@@ -295,6 +522,11 @@
             transform: translateY(0) scale(1);
         }
 
+        body.hacker-mode .section {
+            margin-bottom: 2rem;
+            animation: typing 1s steps(30);
+        }
+
         h2 {
             color: var(--secondary);
             font-size: 2.8rem;
@@ -303,6 +535,13 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             animation: slideInLeft 0.8s ease forwards;
+        }
+
+        body.hacker-mode h2 {
+            font-size: 1.5rem;
+            color: var(--hacker-text);
+            text-transform: none;
+            margin-bottom: 1rem;
         }
 
         h2::after {
@@ -321,11 +560,18 @@
             width: 80px;
         }
 
-        /* Grid */
+        body.hacker-mode h2::after {
+            display: none;
+        }
+
         .grid-2col {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2.5rem;
+        }
+
+        body.hacker-mode .grid-2col {
+            display: block;
         }
 
         .card {
@@ -344,17 +590,49 @@
             transition-delay: calc(0.1s * var(--card-index));
         }
 
+        body.hacker-mode .card {
+            background: none;
+            border: none;
+            padding: 1rem 0;
+            transform: none;
+        }
+
         .card:hover {
-            transform: translateY(-15px) rotateX(5deg);
+            transform: translateY(-15px) rotateX(5deg) rotateY(5deg);
             box-shadow: var(--shadow);
             background: rgba(0,255,136,0.05);
         }
 
-        /* Projects & Courses */
+        body.hacker-mode .card:hover {
+            transform: none;
+            background: none;
+        }
+
+        body.hacker-mode #skills .card {
+            display: none;
+        }
+
+        body.hacker-mode #skills .skills-json {
+            display: block;
+            background: rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 5px;
+            white-space: pre;
+            animation: typing 2s steps(40);
+        }
+
+        .skills-json {
+            display: none;
+        }
+
         .project-card, .course-card {
             margin-bottom: 2.5rem;
             position: relative;
             overflow: hidden;
+        }
+
+        body.hacker-mode .project-card, body.hacker-mode .course-card {
+            margin-bottom: 1rem;
         }
 
         .project-tech, .course-tech {
@@ -362,6 +640,10 @@
             gap: 0.8rem;
             flex-wrap: wrap;
             margin: 1.5rem 0;
+        }
+
+        body.hacker-mode .project-tech, body.hacker-mode .course-tech {
+            display: inline;
         }
 
         .tech-tag {
@@ -380,12 +662,24 @@
             opacity: 1;
         }
 
+        body.hacker-mode .tech-tag {
+            background: none;
+            color: var(--hacker-accent);
+            padding: 0;
+            margin: 0 0.5rem;
+            display: inline;
+        }
+
         .tech-tag:hover {
             transform: scale(1.15) rotate(5deg);
             background: var(--accent);
         }
 
-        /* Kurs Sekcija */
+        body.hacker-mode .tech-tag:hover {
+            transform: none;
+            color: var(--hacker-text);
+        }
+
         .course-card {
             cursor: pointer;
             transition: all 0.3s ease;
@@ -396,6 +690,11 @@
             transform: translateY(-10px) scale(1.02);
         }
 
+        body.hacker-mode .course-card:hover {
+            transform: none;
+            background: none;
+        }
+
         .course-details {
             display: none;
             margin-top: 1.5rem;
@@ -403,6 +702,11 @@
             background: rgba(0,0,0,0.3);
             border-radius: 10px;
             animation: slideIn 0.5s ease;
+        }
+
+        body.hacker-mode .course-details {
+            background: none;
+            padding: 0.5rem 0;
         }
 
         .course-preview {
@@ -419,16 +723,23 @@
             transition: transform 0.3s ease;
         }
 
+        body.hacker-mode .course-preview {
+            display: none;
+        }
+
         .course-details.active .course-preview {
             transform: scale(1.05);
         }
 
-        /* Social Share */
         .social-share {
             display: flex;
             gap: 1rem;
             justify-content: center;
             margin-top: 2rem;
+        }
+
+        body.hacker-mode .social-share {
+            justify-content: flex-start;
         }
 
         .share-btn {
@@ -440,12 +751,22 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
+        body.hacker-mode .share-btn {
+            background: none;
+            color: var(--hacker-text);
+            padding: 0;
+        }
+
         .share-btn:hover {
             transform: scale(1.1) rotate(3deg);
             box-shadow: 0 5px 15px rgba(0,255,136,0.3);
         }
 
-        /* Back to Top */
+        body.hacker-mode .share-btn:hover {
+            transform: none;
+            color: var(--hacker-accent);
+        }
+
         .back-to-top {
             position: fixed;
             bottom: 2rem;
@@ -464,6 +785,12 @@
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
+        body.hacker-mode .back-to-top {
+            background: none;
+            color: var(--hacker-text);
+            border: 1px solid var(--hacker-text);
+        }
+
         .back-to-top.visible {
             opacity: 1;
             transform: scale(1);
@@ -474,13 +801,23 @@
             transform: scale(1.1);
         }
 
-        /* Footer */
+        body.hacker-mode .back-to-top:hover {
+            transform: none;
+            color: var(--hacker-accent);
+        }
+
         footer {
             background: var(--primary);
             color: var(--text);
             padding: 2rem 0;
             text-align: center;
             border-top: 1px solid var(--secondary);
+        }
+
+        body.hacker-mode footer {
+            background: var(--hacker-bg);
+            border-top: 1px solid var(--hacker-text);
+            text-align: left;
         }
 
         .footer-content {
@@ -491,20 +828,39 @@
             align-items: center;
         }
 
+        body.hacker-mode .footer-content {
+            align-items: flex-start;
+        }
+
         .footer-links {
             display: flex;
             gap: 1.5rem;
             margin-bottom: 1rem;
         }
 
+        body.hacker-mode .footer-links {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
         .footer-links a {
             color: var(--text);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        body.hacker-mode .footer-links a {
+            color: var(--hacker-text);
         }
 
         .footer-links a:hover {
             color: var(--secondary);
+            transform: scale(1.1);
+        }
+
+        body.hacker-mode .footer-links a:hover {
+            color: var(--hacker-accent);
+            transform: none;
         }
 
         .social-icons {
@@ -513,29 +869,57 @@
             margin-bottom: 1rem;
         }
 
+        body.hacker-mode .social-icons {
+            flex-direction: column;
+        }
+
         .social-icons a {
             color: var(--text);
             font-size: 1.5rem;
             transition: color 0.3s ease, transform 0.3s ease;
         }
 
+        body.hacker-mode .social-icons a {
+            color: var(--hacker-text);
+            font-size: 1rem;
+        }
+
         .social-icons a:hover {
             color: var(--secondary);
-            transform: scale(1.1);
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        body.hacker-mode .social-icons a:hover {
+            color: var(--hacker-accent);
+            transform: none;
         }
 
         .footer-contact {
             margin-bottom: 1rem;
         }
 
+        body.hacker-mode .footer-contact {
+            margin-bottom: 0.5rem;
+        }
+
         .footer-contact a {
             color: var(--text);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        body.hacker-mode .footer-contact a {
+            color: var(--hacker-text);
         }
 
         .footer-contact a:hover {
             color: var(--secondary);
+            transform: scale(1.1);
+        }
+
+        body.hacker-mode .footer-contact a:hover {
+            color: var(--hacker-accent);
+            transform: none;
         }
 
         .footer-copyright {
@@ -543,56 +927,138 @@
             color: var(--text);
         }
 
-        /* Nove animacije */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+        body.hacker-mode .footer-copyright {
+            font-size: 0.8rem;
+            color: var(--hacker-text);
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        #contact-form input,
+        #contact-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--text);
+            color: var(--text);
+            border-radius: 5px;
+            transition: all 0.3s ease;
         }
 
-        @keyframes zoomIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+        body.hacker-mode #contact-form input,
+        body.hacker-mode #contact-form textarea {
+            background: var(--hacker-bg);
+            border: 1px solid var(--hacker-text);
+            color: var(--hacker-text);
+            border-radius: 0;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        #contact-form input:focus,
+        #contact-form textarea:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 10px rgba(0,255,136,0.3);
+            outline: none;
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        body.hacker-mode #contact-form input:focus,
+        body.hacker-mode #contact-form textarea:focus {
+            border-color: var(--hacker-accent);
+            box-shadow: none;
         }
 
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
+        #contact-form button {
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        @keyframes popIn {
-            from { opacity: 0; transform: scale(0.5); }
-            to { opacity: 1; transform: scale(1); }
+        body.hacker-mode #contact-form button {
+            background: none;
+            color: var(--hacker-text);
+            border: 1px solid var(--hacker-text);
+            border-radius: 0;
         }
 
-        @keyframes bounceIn {
-            0% { opacity: 0; transform: scale(0.3); }
-            50% { opacity: 1; transform: scale(1.05); }
-            100% { opacity: 1; transform: scale(1); }
+        #contact-form button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,255,136,0.3);
         }
 
-        /* Responsivnost */
+        body.hacker-mode #contact-form button:hover {
+            transform: none;
+            color: var(--hacker-accent);
+            border-color: var(--hacker-accent);
+        }
+
+        .cursor-trail {
+            position: fixed;
+            pointer-events: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            color: var(--secondary);
+            opacity: 0.8;
+            transition: opacity 1s ease, transform 0.5s ease;
+            z-index: 1002;
+        }
+
+        body.hacker-mode .cursor-trail {
+            color: var(--hacker-text);
+        }
+
+        body.glitch-mode .cursor-trail {
+            color: var(--glitch-green);
+            animation: glitch-text 0.5s infinite;
+        }
+
+        body.light-mode .cursor-trail {
+            color: var(--light-text);
+            opacity: 0.6;
+        }
+
+        .cursor-trail.fade-out {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes scaleIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        @keyframes fadeIn { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+        @keyframes glitch-flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+        @keyframes glitch-text {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); color: var(--glitch-red); }
+            40% { transform: translate(2px, -2px); color: var(--glitch-blue); }
+            60% { transform: translate(-2px, 0); color: var(--glitch-green); }
+            80% { transform: translate(2px, 2px); }
+            100% { transform: translate(0); }
+        }
+        @keyframes glitch-skew {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(5deg); }
+            40% { transform: skew(-5deg); }
+            60% { transform: skew(3deg); }
+            80% { transform: skew(-3deg); }
+            100% { transform: skew(0deg); }
+        }
+        @keyframes flicker { 0%, 100% { opacity: 0.8; } 50% { opacity: 0.6; } }
+        @keyframes typing { 0% { width: 0; } 50% { width: 100%; } 100% { width: 0; } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+        @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.3); } 50% { opacity: 1; transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
+
         @media (max-width: 768px) {
-            .hero .name { font-size: 3.5rem; }
+            .hero .name { font-size: 3rem; }
             .hero p { font-size: 1.4rem; }
-            .nav-menu { gap: 1rem; }
             .profile-img { width: 200px; height: 200px; }
-            h2 { font-size: 2.2rem; }
-            .hamburger { display: flex; }
+            h2 { font-size: 2rem; }
             .nav-menu {
                 position: fixed;
                 top: 0;
@@ -606,53 +1072,88 @@
                 transform: translateX(-100%);
                 transition: transform 0.3s ease;
             }
-            .nav-menu.active {
-                transform: translateX(0);
-            }
-            .footer-links {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
+            body.hacker-mode .nav-menu { background: var(--hacker-bg); }
+            .nav-menu.active { transform: translateX(0); }
+            .hamburger { display: flex; }
+            .terminal { width: 90%; right: 5%; }
+            .footer-links, .social-icons { flex-direction: column; gap: 0.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero .name { font-size: 2.5rem; }
+            .hero p { font-size: 1.2rem; }
+            .profile-img { width: 150px; height: 150px; }
+            .container { padding: 2rem 1rem; }
+            .contact-bar { gap: 1rem; }
         }
     </style>
 </head>
 <body>
-    <!-- Loader -->
+    <svg>
+        <defs>
+            <filter id="glitch-filter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="1" result="noise"/>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="B"/>
+            </filter>
+        </defs>
+    </svg>
+
     <div class="loader">
         <div class="loader-circle"></div>
         <div class="loader-text">Code Loading...</div>
     </div>
 
-    <!-- Navigacija -->
-    <nav class="navbar">
+    <div class="hacker-loader">
+        <div class="hacker-loader-text">sudo access granted...</div>
+        <div class="hacker-loader-text">Loading hidden interface...</div>
+    </div>
+
+    <div class="glitch-loader">
+        <div class="glitch-loader-text">System Malfunction...</div>
+        <div class="glitch-loader-text">Entering Glitch Dimension...</div>
+    </div>
+
+    <nav class="navbar" aria-label="Main navigation">
         <div class="nav-content">
             <div class="nav-logo">VS Code</div>
-            <div class="hamburger">
+            <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#home">Početna</a></li>
-                <li><a href="#about">O meni</a></li>
-                <li><a href="#skills">Veštine</a></li>
-                <li><a href="#projects">Projekti</a></li>
-                <li><a href="#courses">Kursevi</a></li>
-                <li><a href="#contact">Kontakt</a></li>
-                <li><i class="fas fa-sun theme-toggle" onclick="toggleTheme()"></i></li>
+            </button>
+            <ul class="nav-menu" role="menubar">
+                <li role="none"><a href="#home" role="menuitem" data-lang-key="home">Početna</a></li>
+                <li role="none"><a href="#about" role="menuitem" data-lang-key="about">O meni</a></li>
+                <li role="none"><a href="#skills" role="menuitem" data-lang-key="skills">Veštine</a></li>
+                <li role="none"><a href="#projects" role="menuitem" data-lang-key="projects">Projekti</a></li>
+                <li role="none"><a href="#courses" role="menuitem" data-lang-key="courses">Kursevi</a></li>
+                <li role="none"><a href="#contact" role="menuitem" data-lang-key="contact">Kontakt</a></li>
+                <li role="none">
+                    <button class="theme-toggle fas fa-sun" onclick="toggleTheme()" aria-label="Toggle theme"></button>
+                </li>
+                <li role="none">
+                    <button class="language-toggle" onclick="toggleLanguage()" aria-label="Toggle language">SR</button>
+                </li>
             </ul>
         </div>
     </nav>
 
-    <!-- Hero Sekcija -->
+    <div class="hacker-toggle" onclick="toggleHackerMode()" aria-label="Toggle Hacker Mode">terminal</div>
+
+    <div class="terminal">
+        <div class="terminal-output"></div>
+        <input type="text" class="terminal-input" placeholder="> Type command..." aria-label="Terminal command input">
+    </div>
+
     <header class="hero" id="home">
-        <canvas id="hero-canvas"></canvas>
+        <canvas id="hero-canvas" aria-hidden="true"></canvas>
+        <canvas id="matrix-canvas" aria-hidden="true"></canvas>
         <div class="hero-content">
-            <img src="slika.jpg" alt="Vasilije Stanković" class="profile-img">
-            <h1 class="name">Vasilije Stanković</h1>
-            <p>Crafting innovative solutions with code & sharing knowledge through education</p>
+            <img src="slika.jpg" alt="Vasilije Stanković profile picture" class="profile-img" loading="lazy">
+            <h1 class="name glitch">Vasilije Stanković</h1>
+            <p class="typing" data-lang-key="hero-text">Kreiram inovativna rešenja kroz kod i delim znanje kroz edukaciju</p>
             <div class="contact-bar">
-                <div class="contact-item">
+                <div class="contact-item" tabindex="0">
                     <i class="fas fa-map-marker-alt"></i>
                     Belgrade, Serbia
                 </div>
@@ -660,43 +1161,49 @@
                     <i class="fas fa-envelope"></i>
                     vasa.stankovic@gmail.com
                 </a>
-                <a href="https://github.com/Vaske10024" class="contact-item">
+                <a href="https://github.com/Vaske10024" class="contact-item" target="_blank">
                     <i class="fab fa-github"></i>
                     GitHub
+                </a>
+                <a href="https://linkedin.com/in/vasilije-stankovic" class="contact-item" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                    LinkedIn
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- Glavni Sadržaj -->
     <main class="container">
-        <!-- O meni -->
         <section class="section" id="about">
-            <h2>O meni</h2>
-            <p>Zdravo, ja sam Vasilije – student softverskog inženjerstva sa posebnim interesovanjem za pisanje čistog, efikasnog koda i deljenje znanja. Uživam u rešavanju algoritamskih problema, radu na inovativnim projektima i učenju kroz praktične izazove. Težim ka razvoju tehnoloških rešenja koja olakšavaju drugima da realizuju svoje ideje.</p>
+            <h2 class="glitch" data-lang-key="about">O meni</h2>
+            <p class="typing" data-lang-key="about-text">Zdravo! Ja sam Vasilije, student softverskog inženjerstva sa strašću za pisanje elegantnog koda i deljenje znanja. Moj cilj je da stvaram tehnološka rešenja koja inspirišu i pomažu drugima da ostvare svoje ideje. Zaljubljenik sam u algoritme, inovacije i učenje kroz praksu.</p>
         </section>
 
-        <!-- Veštine i Obrazovanje -->
         <div class="grid-2col">
             <section class="section" id="skills">
-                <h2>Veštine</h2>
-                <div class="card" style="--card-index: 1;">
-                    <h3>Programiranje</h3>
-                    <p>C , Java , Python </p>
+                <h2 class="glitch" data-lang-key="skills">Veštine</h2>
+                <div class="skills-json">{
+                    "languages": ["C", "Java", "Python"],
+                    "technologies": ["Git", "Linux", "JavaFX", "TensorFlow", "OpenCV"],
+                    "additional": ["Paralelno programiranje", "AI", "Computer Vision", "Optimizacija"]
+                }</div>
+                <div class="card" style="--card-index: 1;" tabindex="0">
+                    <h3 data-lang-key="programming">Programiranje</h3>
+                    <p>C, Java, Python</p>
                 </div>
-                <div class="card" style="--card-index: 2;">
-                    <h3>Tehnologije</h3>
+                <div class="card" style="--card-index: 2;" tabindex="0">
+                    <h3 data-lang-key="technologies">Tehnologije</h3>
                     <p>Git, Linux, JavaFX, TensorFlow, OpenCV</p>
                 </div>
-                <div class="card" style="--card-index: 3;">
-                    <h3>Dodatne stvari</h3>
+                <div class="card" style="--card-index: 3;" tabindex="0">
+                    <h3 data-lang-key="additional">Dodatne stvari</h3>
                     <p>Paralelno programiranje, AI, Computer Vision, Optimizacija</p>
                 </div>
             </section>
 
             <section class="section">
-                <h2>Obrazovanje</h2>
-                <div class="card" style="--card-index: 1;">
+                <h2 class="glitch" data-lang-key="education">Obrazovanje</h2>
+                <div class="card" style="--card-index: 1;" tabindex="0">
                     <h3>Računarski Fakultet Beograd</h3>
                     <p>BSc Softversko Inženjerstvo</p>
                     <p>2023 - 2027 (Očekivano)</p>
@@ -704,132 +1211,128 @@
             </section>
         </div>
 
-        <!-- Projekti -->
         <section class="section" id="projects">
-            <h2>Projekti</h2>
-            <div class="project-card card" style="--card-index: 1;">
+            <h2 class="glitch" data-lang-key="projects">Projekti</h2>
+            <div class="project-card card" style="--card-index: 1;" tabindex="0">
                 <h3>Smart Room Planner</h3>
                 <div class="project-tech">
-                    <span class="tech-tag" style="--tag-index: 1;">Java</span>
-                    <span class="tech-tag" style="--tag-index: 2;">JavaFX</span>
-                    <span class="tech-tag" style="--tag-index: 3;">OOP</span>
+                    <span class="tech-tag" style="--tag-index: 1;" tabindex="0">Java</span>
+                    <span class="tech-tag" style="--tag-index: 2;" tabindex="0">JavaFX</span>
+                    <span class="tech-tag" style="--tag-index: 3;" tabindex="0">OOP</span>
                 </div>
-                <p>Aplikacija za pametno planiranje prostora sa interaktivnim GUI-jem. Koristi MVC i moderne dizajn obrasce. <a href="#">GitHub</a> | <a href="#">Demo</a></p>
+                <p class="typing" data-lang-key="project1">Aplikacija za pametno planiranje prostora sa interaktivnim GUI-jem. Koristi MVC i moderne dizajn obrasce. <a href="https://github.com/Vaske10024/smart-room-planner" target="_blank">GitHub</a> | <a href="https://demo.smartroomplanner.com" target="_blank">Demo</a></p>
             </div>
-            <div class="project-card card" style="--card-index: 2;">
+            <div class="project-card card" style="--card-index: 2;" tabindex="0">
                 <h3>AI Card Predictor</h3>
                 <div class="project-tech">
-                    <span class="tech-tag" style="--tag-index: 1;">Python</span>
-                    <span class="tech-tag" style="--tag-index: 2;">TensorFlow</span>
-                    <span class="tech-tag" style="--tag-index: 3;">ML</span>
+                    <span class="tech-tag" style="--tag-index: 1;" tabindex="0">Python</span>
+                    <span class="tech-tag" style="--tag-index: 2;" tabindex="0">TensorFlow</span>
+                    <span class="tech-tag" style="--tag-index: 3;" tabindex="0">ML</span>
                 </div>
-                <p>Inteligentni model za predviđanje karata sa 79% tačnosti. Uključuje obradu podataka i neuronske mreže. <a href="#">GitHub</a> | <a href="#">Demo</a></p>
+                <p class="typing" data-lang-key="project2">Inteligentni model za predviđanje karata sa 79% tačnosti. Uključuje obradu podataka i neuronske mreže. <a href="https://github.com/Vaske10024/ai-card-predictor" target="_blank">GitHub</a> | <a href="https://demo.aicardpredictor.com" target="_blank">Demo</a></p>
             </div>
-            <div class="project-card card" style="--card-index: 3;">
+            <div class="project-card card" style="--card-index: 3;" tabindex="0">
                 <h3>Sign Language Detector</h3>
                 <div class="project-tech">
-                    <span class="tech-tag" style="--tag-index: 1;">Python</span>
-                    <span class="tech-tag" style="--tag-index: 2;">OpenCV</span>
-                    <span class="tech-tag" style="--tag-index: 3;">MediaPipe</span>
+                    <span class="tech-tag" style="--tag-index: 1;" tabindex="0">Python</span>
+                    <span class="tech-tag" style="--tag-index: 2;" tabindex="0">OpenCV</span>
+                    <span class="tech-tag" style="--tag-index: 3;" tabindex="0">MediaPipe</span>
                 </div>
-                <p>Real-time detekcija znakovnog jezika sa praćenjem pokreta ruku. <a href="#">GitHub</a> | <a href="#">Demo</a></p>
+                <p class="typing" data-lang-key="project3">Real-time detekcija znakovnog jezika sa praćenjem pokreta ruku. <a href="https://github.com/Vaske10024/sign-language-detector" target="_blank">GitHub</a> | <a href="https://demo.signlanguagedetector.com" target="_blank">Demo</a></p>
             </div>
         </section>
 
-        <!-- Kursevi -->
         <section class="section" id="courses">
-            <h2>Kursevi</h2>
-            <div class="course-card card" style="--card-index: 1;" onclick="toggleDetails(this)">
+            <h2 class="glitch" data-lang-key="courses">Kursevi</h2>
+            <div class="course-card card" style="--card-index: 1;" onclick="toggleDetails(this)" tabindex="0">
                 <h3>Mastering C Programming</h3>
                 <div class="course-tech">
-                    <span class="tech-tag" style="--tag-index: 1;">C</span>
-                    <span class="tech-tag" style="--tag-index: 2;">Beginner</span>
-                    <span class="tech-tag" style="--tag-index: 3;">Core Concepts</span>
+                    <span class="tech-tag" style="--tag-index: 1;" tabindex="0">C</span>
+                    <span class="tech-tag" style="--tag-index: 2;" tabindex="0">Beginner</span>
+                    <span class="tech-tag" style="--tag-index: 3;" tabindex="0">Core Concepts</span>
                 </div>
-                <p>Ovladaj osnovama programiranja u C-u kroz praktične primere i zadatke.</p>
+                <p class="typing" data-lang-key="course1">Ovladaj osnovama programiranja u C-u kroz praktične primere i zadatke.</p>
                 <div class="course-details">
                     <div class="course-preview">Video Pregled Kursа</div>
-                    <p>Kurs pokriva osnove C-a: promenljive, petlje, funkcije i pokazivače. Idealno za početnike koji žele čvrstu osnovu.</p>
-                    <a href="#">Započni Kurs</a>
+                    <p class="typing" data-lang-key="course1-details">Kurs pokriva osnove C-a: promenljive, petlje, funkcije i pokazivače. Idealno za početnike koji žele čvrstu osnovu.</p>
+                    <a href="https://courses.vasilijestankovic.com/c-programming" target="_blank">Započni Kurs</a>
                 </div>
             </div>
-            <div class="course-card card" style="--card-index: 2;" onclick="toggleDetails(this)">
+            <div class="course-card card" style="--card-index: 2;" onclick="toggleDetails(this)" tabindex="0">
                 <h3>Advanced C++ Techniques</h3>
                 <div class="course-tech">
-                    <span class="tech-tag" style="--tag-index: 1;">C++</span>
-                    <span class="tech-tag" style="--tag-index: 2;">Advanced</span>
-                    <span class="tech-tag" style="--tag-index: 3;">Algorithms</span>
+                    <span class="tech-tag" style="--tag-index: 1;" tabindex="0">C++</span>
+                    <span class="tech-tag" style="--tag-index: 2;" tabindex="0">Advanced</span>
+                    <span class="tech-tag" style="--tag-index: 3;" tabindex="0">Algorithms</span>
                 </div>
-                <p>Istraži napredne koncepte u C++-u: STL, šabloni i optimizacija koda.</p>
+                <p class="typing" data-lang-key="course2">Istraži napredne koncepte u C++-u: STL, šabloni i optimizacija koda.</p>
                 <div class="course-details">
                     <div class="course-preview">Interaktivni Primer</div>
-                    <p>Dubiniski kurs o C++-u sa fokusom na performanse i moderne tehnike programiranja.</p>
-                    <a href="#">Započni Kurs</a>
+                    <p class="typing" data-lang-key="course2-details">Dubiniski kurs o C++-u sa fokusom na performanse i moderne tehnike programiranja.</p>
+                    <a href="https://courses.vasilijestankovic.com/cpp-advanced" target="_blank">Započni Kurs</a>
                 </div>
             </div>
-            <div class="course-card card" style="--card-index: 3;" onclick="toggleDetails(this)">
+            <div class="course-card card" style="--card-index: 3;" onclick="toggleDetails(this)" tabindex="0">
                 <h3>Python for AI</h3>
                 <div class="course-tech">
-                    <span class="tech-tag" style="--tag-index: 1;">Python</span>
-                    <span class="tech-tag" style="--tag-index: 2;">AI</span>
-                    <span class="tech-tag" style="--tag-index: 3;">TensorFlow</span>
+                    <span class="tech-tag" style="--tag-index: 1;" tabindex="0">Python</span>
+                    <span class="tech-tag" style="--tag-index: 2;" tabindex="0">AI</span>
+                    <span class="tech-tag" style="--tag-index: 3;" tabindex="0">TensorFlow</span>
                 </div>
-                <p>Nauči kako da koristiš Python za razvoj AI modela i obradu podataka.</p>
+                <p class="typing" data-lang-key="course3">Nauči kako da koristiš Python za razvoj AI modela i obradu podataka.</p>
                 <div class="course-details">
                     <div class="course-preview">AI Demo</div>
-                    <p>Kurs uključuje osnove Pythona, rad sa bibliotekama i kreiranje jednostavnih AI projekata.</p>
-                    <a href="#">Započni Kurs</a>
+                    <p class="typing" data-lang-key="course3-details">Kurs uključuje osnove Pythona, rad sa bibliotekama i kreiranje jednostavnih AI projekata.</p>
+                    <a href="https://courses.vasilijestankovic.com/python-ai" target="_blank">Započni Kurs</a>
                 </div>
             </div>
         </section>
 
-        <!-- Kontakt -->
         <section class="section" id="contact">
-            <h2>Kontakt</h2>
-            <div class="card" style="--card-index: 1;">
-                <p>Imate ideju ili projekat? Kontaktirajte me i zajedno ćemo je oživeti!</p>
-                <form id="contact-form" style="margin-top: 2rem;">
-                    <input type="text" name="name" placeholder="Vaše ime" required style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(255,255,255,0.05); border: 1px solid var(--text); color: var(--text); border-radius: 5px; transition: all 0.3s ease;">
-                    <input type="email" name="email" placeholder="Vaš email" required style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(255,255,255,0.05); border: 1px solid var(--text); color: var(--text); border-radius: 5px; transition: all 0.3s ease;">
-                    <textarea name="message" placeholder="Vaša poruka" required style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; background: rgba(255,255,255,0.05); border: 1px solid var(--text); color: var(--text); border-radius: 5px; min-height: 120px; transition: all 0.3s ease;"></textarea>
-                    <button type="submit" style="background: var(--secondary); color: var(--primary); padding: 0.8rem 2rem; border: none; border-radius: 5px; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease;">Pošalji Poruku</button>
+            <h2 class="glitch" data-lang-key="contact">Kontakt</h2>
+            <div class="card" style="--card-index: 1;" tabindex="0">
+                <p class="typing" data-lang-key="contact-text">Imate ideju ili projekat? Kontaktirajte me i zajedno ćemo je oživeti!</p>
+                <form id="contact-form" style="margin-top: 2rem;" aria-label="Contact form">
+                    <input type="text" name="name" placeholder="Vaše ime" required aria-label="Your name">
+                    <input type="email" name="email" placeholder="Vaš email" required aria-label="Your email">
+                    <textarea name="message" placeholder="Vaša poruka" required aria-label="Your message"></textarea>
+                    <button type="submit" aria-label="Send message">Pošalji Poruku</button>
                 </form>
                 <div class="contact-bar" style="margin-top: 2rem;">
                     <a href="mailto:vasa.stankovic@gmail.com" class="contact-item">
                         <i class="fas fa-envelope"></i>
                         vasa.stankovic@gmail.com
                     </a>
-                    <div class="contact-item">
+                    <div class="contact-item" tabindex="0">
                         <i class="fas fa-phone"></i>
-                        
+                        +381 64 123 4567
                     </div>
-                    <a href="https://linkedin.com/in/vasilije-stankovic" class="contact-item">
+                    <a href="https://linkedin.com/in/vasilije-stankovic" class="contact-item" target="_blank">
                         <i class="fab fa-linkedin"></i>
                         LinkedIn
                     </a>
                 </div>
                 <div class="social-share">
-                    <a href="https://twitter.com/intent/tweet?url=https://vasilije.stankovic.com" class="share-btn" target="_blank">Twitter</a>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=https://vasilije.stankovic.com" class="share-btn" target="_blank">Facebook</a>
+                    <a href="https://twitter.com/intent/tweet?url=https://vasilijestankovic.com" class="share-btn" target="_blank">Twitter</a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=https://vasilijestankovic.com" class="share-btn" target="_blank">Facebook</a>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-links">
-                <a href="#about">O meni</a>
-                <a href="#skills">Veštine</a>
-                <a href="#projects">Projekti</a>
-                <a href="#courses">Kursevi</a>
-                <a href="#contact">Kontakt</a>
+                <a href="#about" data-lang-key="about">O meni</a>
+                <a href="#skills" data-lang-key="skills">Veštine</a>
+                <a href="#projects" data-lang-key="projects">Projekti</a>
+                <a href="#courses" data-lang-key="courses">Kursevi</a>
+                <a href="#contact" data-lang-key="contact">Kontakt</a>
             </div>
             <div class="social-icons">
-                <a href="https://github.com/Vaske10024" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://linkedin.com/in/vasilije-stankovic" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <a href="https://twitter.com/yourprofile" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://github.com/Vaske10024" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com/in/vasilije-stankovic" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com/vasilijestank" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
             </div>
             <div class="footer-contact">
                 <a href="mailto:vasa.stankovic@gmail.com">vasa.stankovic@gmail.com</a>
@@ -840,298 +1343,376 @@
         </div>
     </footer>
 
-    <!-- Back to Top -->
-    <div class="back-to-top" onclick="scrollToTop()">
+    <button class="back-to-top" onclick="scrollToTop()" aria-label="Back to top">
         <i class="fas fa-arrow-up"></i>
-    </div>
+    </button>
 
     <script>
-        // Loader
+        const translations = {
+            en: {
+                home: "Home",
+                about: "About",
+                skills: "Skills",
+                projects: "Projects",
+                courses: "Courses",
+                contact: "Contact",
+                "hero-text": "Crafting innovative solutions with code & sharing knowledge through education",
+                "about-text": "Hello! I'm Vasilije, a software engineering student passionate about writing elegant code and sharing knowledge. My goal is to create technological solutions that inspire and help others realize their ideas. I'm an enthusiast of algorithms, innovation, and learning through practice.",
+                programming: "Programming",
+                technologies: "Technologies",
+                additional: "Additional Skills",
+                education: "Education",
+                project1: "Application for smart room planning with an interactive GUI. Uses MVC and modern design patterns.",
+                project2: "Intelligent model for card prediction with 79% accuracy. Includes data processing and neural networks.",
+                project3: "Real-time sign language detection with hand movement tracking.",
+                course1: "Master the basics of C programming through practical examples and exercises.",
+                "course1-details": "The course covers C fundamentals: variables, loops, functions, and pointers. Ideal for beginners seeking a solid foundation.",
+                course2: "Explore advanced concepts in C++: STL, templates, and code optimization.",
+                "course2-details": "In-depth course on C++ focusing on performance and modern programming techniques.",
+                course3: "Learn how to use Python for developing AI models and data processing.",
+                "course3-details": "The course includes Python basics, working with libraries, and creating simple AI projects.",
+                "contact-text": "Have an idea or project? Contact me, and let's bring it to life together!"
+            },
+            sr: {
+                home: "Početna",
+                about: "O meni",
+                skills: "Veštine",
+                projects: "Projekti",
+                courses: "Kursevi",
+                contact: "Kontakt",
+                "hero-text": "Kreiram inovativna rešenja kroz kod i delim znanje kroz edukaciju",
+                "about-text": "Zdravo! Ja sam Vasilije, student softverskog inženjerstva sa strašću za pisanje elegantnog koda i deljenje znanja. Moj cilj je da stvaram tehnološka rešenja koja inspirišu i pomažu drugima da ostvare svoje ideje. Zaljubljenik sam u algoritme, inovacije i učenje kroz praksu.",
+                programming: "Programiranje",
+                technologies: "Tehnologije",
+                additional: "Dodatne stvari",
+                education: "Obrazovanje",
+                project1: "Aplikacija za pametno planiranje prostora sa interaktivnim GUI-jem. Koristi MVC i moderne dizajn obrasce.",
+                project2: "Inteligentni model za predviđanje karata sa 79% tačnosti. Uključuje obradu podataka i neuronske mreže.",
+                project3: "Real-time detekcija znakovnog jezika sa praćenjem pokreta ruku.",
+                course1: "Ovladaj osnovama programiranja u C-u kroz praktične primere i zadatke.",
+                "course1-details": "Kurs pokriva osnove C-a: promenljive, petlje, funkcije i pokazivače. Idealno za početnike koji žele čvrstu osnovu.",
+                course2: "Istraži napredne koncepte u C++-u: STL, šabloni i optimizacija koda.",
+                "course2-details": "Dubiniski kurs o C++-u sa fokusom na performanse i moderne tehnike programiranja.",
+                course3: "Nauči kako da koristiš Python za razvoj AI modela i obradu podataka.",
+                "course3-details": "Kurs uključuje osnove Pythona, rad sa bibliotekama i kreiranje jednostavnih AI projekata.",
+                "contact-text": "Imate ideju ili projekat? Kontaktirajte me i zajedno ćemo je oživeti!"
+            }
+        };
+
+        let currentLang = 'sr';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'sr' ? 'en' : 'sr';
+            document.querySelector('.language-toggle').textContent = currentLang.toUpperCase();
+            document.querySelectorAll('[data-lang-key]').forEach(element => {
+                const key = element.getAttribute('data-lang-key');
+                element.textContent = translations[currentLang][key];
+            });
+        }
+
         window.addEventListener('load', () => {
             const loader = document.querySelector('.loader');
             setTimeout(() => {
                 loader.classList.add('hidden');
                 document.querySelector('.navbar').classList.add('visible');
-            }, 1000);
+            }, 800);
         });
 
-        // Hamburger meni
-        const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('.nav-menu');
-        hamburger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            hamburger.classList.toggle('active');
+        function toggleHackerMode() {
+            const body = document.body;
+            const hackerLoader = document.querySelector('.hacker-loader');
+            const terminal = document.querySelector('.terminal');
+            if (!body.classList.contains('hacker-mode') && !body.classList.contains('glitch-mode')) {
+                hackerLoader.classList.add('active');
+                setTimeout(() => {
+                    body.classList.add('hacker-mode');
+                    hackerLoader.classList.remove('active');
+                    terminal.classList.add('active');
+                }, 1500);
+            } else {
+                body.classList.remove('hacker-mode');
+                terminal.classList.remove('active');
+            }
+        }
+
+        function toggleGlitchMode() {
+            const body = document.body;
+            const glitchLoader = document.querySelector('.glitch-loader');
+            const terminal = document.querySelector('.terminal');
+            if (!body.classList.contains('glitch-mode')) {
+                glitchLoader.classList.add('active');
+                setTimeout(() => {
+                    body.classList.add('glitch-mode');
+                    body.classList.remove('hacker-mode', 'light-mode');
+                    glitchLoader.classList.remove('active');
+                    terminal.classList.add('active');
+                }, 1500);
+            } else {
+                body.classList.remove('glitch-mode');
+                terminal.classList.remove('active');
+                document.querySelector('#matrix-canvas').classList.remove('active');
+            }
+        }
+
+        let clickCount = 0;
+        let clickTimeout;
+        document.querySelector('.hacker-toggle').addEventListener('click', () => {
+            clickCount++;
+            if (clickCount >= 5) {
+                toggleGlitchMode();
+                clickCount = 0;
+            }
+            clearTimeout(clickTimeout);
+            clickTimeout = setTimeout(() => clickCount = 0, 2000);
         });
 
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'g') {
+                toggleGlitchMode();
+            }
+        });
+
+        const terminal = document.querySelector('.terminal');
+        const terminalInput = document.querySelector('.terminal-input');
+        const terminalOutput = document.querySelector('.terminal-output');
+
+        const commands = {
+            '/help': 'Available commands: /help, /glitch, /hack, /reset, /theme, /lang',
+            '/glitch': 'Enter the Glitch Dimension',
+            '/hack': 'Trigger Matrix code rain',
+            '/reset': 'Exit all modes',
+            '/theme': 'Toggle light/dark mode',
+            '/lang': 'Toggle language (SR/EN)'
+        };
+
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const command = terminalInput.value.trim().toLowerCase();
+                terminalOutput.innerHTML += `<p>> ${command}</p>`;
+                if (commands[command]) {
+                    terminalOutput.innerHTML += `<p>${commands[command]}</p>`;
+                    if (command === '/glitch') toggleGlitchMode();
+                    else if (command === '/hack') triggerMatrixRain();
+                    else if (command === '/reset') {
+                        document.body.classList.remove('hacker-mode', 'glitch-mode', 'light-mode');
+                        terminal.classList.remove('active');
+                        document.querySelector('#matrix-canvas').classList.remove('active');
+                    }
+                    else if (command === '/theme') toggleTheme();
+                    else if (command === '/lang') toggleLanguage();
+                } else {
+                    terminalOutput.innerHTML += `<p>Unknown command. Type /help for available commands.</p>`;
+                }
+                terminalInput.value = '';
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            } else if (e.key === 'Tab') {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
+                const input = terminalInput.value.trim().toLowerCase();
+                for (const cmd in commands) {
+                    if (cmd.startsWith(input)) {
+                        terminalInput.value = cmd;
+                        break;
+                    }
+                }
+            }
         });
 
-        // Animacije prilikom skrolovanja
+        function triggerMatrixRain() {
+            const canvas = document.getElementById('matrix-canvas');
+            canvas.classList.add('active');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = Array(Math.floor(columns)).fill(0);
+
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#0F0';
+                ctx.font = `${fontSize}px Fira Code`;
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars.charAt(Math.random() * chars.length);
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+            }
+
+            const interval = setInterval(draw, 33);
+            setTimeout(() => {
+                clearInterval(interval);
+                canvas.classList.remove('active');
+            }, 10000);
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.querySelector('.theme-toggle');
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                themeToggle.classList.remove('fa-moon');
+                themeToggle.classList.add('fa-sun');
+            } else {
+                body.classList.add('light-mode');
+                body.classList.remove('hacker-mode', 'glitch-mode');
+                themeToggle.classList.remove('fa-sun');
+                themeToggle.classList.add('fa-moon');
+                document.querySelector('.terminal').classList.remove('active');
+                document.querySelector('#matrix-canvas').classList.remove('active');
+            }
+        }
+
+        const sections = document.querySelectorAll('.section');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.section').forEach(section => {
-            observer.observe(section);
-        });
-
-        // Back to top
-        const backToTop = document.querySelector('.back-to-top');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 400) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
-            }
-        });
+        sections.forEach(section => observer.observe(section));
 
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Toggle kurs detalji
+        window.addEventListener('scroll', () => {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.scrollY > 300) backToTop.classList.add('visible');
+            else backToTop.classList.remove('visible');
+        });
+
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', hamburger.classList.contains('active'));
+        });
+
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', false);
+            });
+        });
+
         function toggleDetails(card) {
             const details = card.querySelector('.course-details');
-            const isVisible = details.style.display === 'block';
-            document.querySelectorAll('.course-details').forEach(d => d.style.display = 'none');
-            details.style.display = isVisible ? 'none' : 'block';
-            if (!isVisible) {
-                details.classList.add('active');
-            } else {
-                details.classList.remove('active');
+            const isActive = details.classList.contains('active');
+            document.querySelectorAll('.course-details').forEach(detail => detail.classList.remove('active'));
+            if (!isActive) details.classList.add('active');
+        }
+
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 100;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.1;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = 'rgba(0, 255, 136, 0.8)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
 
-        // Theme toggle
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
-            const icon = document.querySelector('.theme-toggle');
-            icon.classList.toggle('fa-sun');
-            icon.classList.toggle('fa-moon');
+        function initParticles() {
+            for (let i = 0; i < particleCount; i++) particles.push(new Particle());
         }
 
-        // AJAX za kontakt formu
-        const contactForm = document.getElementById('contact-form');
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            fetch('https://api.example.com/send-message', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Poruka je uspešno poslata!');
-                    contactForm.reset();
-                } else {
-                    alert('Došlo je do greške prilikom slanja poruke.');
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0, 255, 136, ${1 - distance / 100})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Došlo je do greške prilikom slanja poruke.');
-            });
-        });
+                if (particles[i].size <= 0.2) {
+                    particles.splice(i, 1);
+                    i--;
+                    particles.push(new Particle());
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
 
-        // Kontakt forma animacije
-        const formInputs = contactForm.querySelectorAll('input, textarea');
-        formInputs.forEach(input => {
-            input.addEventListener('focus', () => {
-                input.style.borderColor = 'var(--secondary)';
-                input.style.boxShadow = '0 0 10px rgba(0,255,136,0.3)';
-            });
-            input.addEventListener('blur', () => {
-                input.style.borderColor = 'var(--text)';
-                input.style.boxShadow = 'none';
-            });
-        });
+        initParticles();
+        animateParticles();
 
-        const submitButton = contactForm.querySelector('button');
-        submitButton.addEventListener('mouseover', () => {
-            submitButton.style.transform = 'scale(1.05)';
-            submitButton.style.boxShadow = '0 5px 15px rgba(0,255,136,0.3)';
-        });
-        submitButton.addEventListener('mouseout', () => {
-            submitButton.style.transform = 'scale(1)';
-            submitButton.style.boxShadow = 'none';
-        });
-
-        // Google Analytics simulacija
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-XXXXX-Y');
-
-        // Animacija čestica
-        document.addEventListener('DOMContentLoaded', () => {
-            const canvas = document.getElementById('hero-canvas');
-            const ctx = canvas.getContext('2d');
+        window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+        });
 
-            const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = canvas.width;
-            tempCanvas.height = canvas.height;
-            const tempCtx = tempCanvas.getContext('2d');
+        document.getElementById('contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Poruka poslata! (Demo, poruka nije stvarno poslata.)');
+            e.target.reset();
+        });
 
-            const text = 'Vaske';
-            let textPixels = [];
-            const maxParticles = 1500;
-            let particles = [];
+        const codeElements = ['<div>', '{}', 'const', '() => {}', 'int', 'char', 'function', 'return', 'if', 'else'];
+        let lastTrailTime = 0;
+        const trailInterval = 50;
 
-            // Create particles
-            for (let i = 0; i < maxParticles; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 2,
-                    vy: (Math.random() - 0.5) * 2,
-                    size: Math.random() * 2 + 1,
-                    opacity: 0.3,
-                    target: null,
-                    type: 'floating'
-                });
-            }
+        document.addEventListener('mousemove', (e) => {
+            const currentTime = Date.now();
+            if (currentTime - lastTrailTime < trailInterval) return;
+            lastTrailTime = currentTime;
 
-            function updateParticleTargets() {
-                tempCanvas.width = canvas.width;
-                tempCanvas.height = canvas.height;
-                tempCtx.font = `${canvas.width / 10}px Poppins`;
-                tempCtx.textAlign = 'center';
-                tempCtx.textBaseline = 'middle';
-                tempCtx.fillStyle = 'white';
-                tempCtx.fillText(text, canvas.width / 2, canvas.height / 2);
-                const imageData = tempCtx.getImageData(0, 0, canvas.width, canvas.height);
-                const data = imageData.data;
-                textPixels = [];
-                for (let i = 0; i < data.length; i += 4) {
-                    if (data[i + 3] > 0) {
-                        const px = (i / 4) % canvas.width;
-                        const py = Math.floor((i / 4) / canvas.width);
-                        textPixels.push({x: px, y: py});
-                    }
-                }
-                if (textPixels.length === 0) return;
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.textContent = codeElements[Math.floor(Math.random() * codeElements.length)];
+            trail.style.left = `${e.clientX}px`;
+            trail.style.top = `${e.clientY}px`;
 
-                const maxTextParticles = 1000;
-                const textParticleCount = Math.min(textPixels.length, maxTextParticles);
+            const rotation = Math.random() * 30 - 15;
+            const scale = 0.8 + Math.random() * 0.4;
+            trail.style.transform = `rotate(${rotation}deg) scale(${scale})`;
 
-                // Shuffle textPixels
-                const shuffledPixels = [...textPixels].sort(() => 0.5 - Math.random());
-                const targets = shuffledPixels.slice(0, textParticleCount);
+            document.body.appendChild(trail);
 
-                // Assign targets to first textParticleCount particles
-                for (let i = 0; i < maxParticles; i++) {
-                    if (i < textParticleCount) {
-                        particles[i].target = targets[i];
-                        particles[i].type = 'text';
-                    } else {
-                        particles[i].target = null;
-                        particles[i].type = 'floating';
-                    }
-                }
-            }
-
-            // Initial update
-            updateParticleTargets();
-
-            let mouseX = 0;
-            let mouseY = 0;
-
-            canvas.addEventListener('mousemove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                mouseX = e.clientX - rect.left;
-                mouseY = e.clientY - rect.top;
-            });
-
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach(p => {
-                    if (p.type === 'text' && p.target) {
-                        const dx = p.target.x - p.x;
-                        const dy = p.target.y - p.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        // Attraction to target
-                        p.vx += dx * 0.01;
-                        p.vy += dy * 0.01;
-                        p.opacity = 0.3 + (1 - Math.min(distance / 50, 1)) * 0.4;
-                    } else {
-                        // Floating particles move randomly
-                        p.vx += (Math.random() - 0.5) * 0.2;
-                        p.vy += (Math.random() - 0.5) * 0.2;
-                        p.opacity = 0.3;
-                    }
-
-                    // Mouse repulsion
-                    const mouseDx = p.x - mouseX;
-                    const mouseDy = p.y - mouseY;
-                    const mouseDistance = Math.sqrt(mouseDx * mouseDx + mouseDy * mouseDy);
-                    if (mouseDistance < 100) {
-                        const angle = Math.atan2(mouseDy, mouseDx);
-                        p.vx -= Math.cos(angle) * 0.5;
-                        p.vy -= Math.sin(angle) * 0.5;
-                        p.opacity = 0.7;
-                    }
-
-                    // Limit speed
-                    const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-                    if (speed > 1.5) {
-                        p.vx = (p.vx / speed) * 1.5;
-                        p.vy = (p.vy / speed) * 1.5;
-                    }
-
-                    p.x += p.vx;
-                    p.y += p.vy;
-
-                    // Wrap floating particles around the screen
-                    if (p.type === 'floating') {
-                        if (p.x < 0) p.x = canvas.width;
-                        if (p.x > canvas.width) p.x = 0;
-                        if (p.y < 0) p.y = canvas.height;
-                        if (p.y > canvas.height) p.y = 0;
-                    }
-
-                    // Draw particles with glow for text particles
-                    if (p.type === 'text' && p.target) {
-                        const distanceToTarget = Math.sqrt((p.x - p.target.x)**2 + (p.y - p.target.y)**2);
-                        const glowStrength = (1 - Math.min(distanceToTarget / 50, 1)) * 10;
-                        ctx.shadowBlur = glowStrength > 0 ? glowStrength : 0;
-                        ctx.shadowColor = `rgba(0,255,136,${glowStrength / 10})`;
-                    } else {
-                        ctx.shadowBlur = 0;
-                    }
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(0, 255, 136, ${p.opacity})`;
-                    ctx.fill();
-                });
-                requestAnimationFrame(animate);
-            }
-
-            animate();
-
-            window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                updateParticleTargets();
-                // Add inertia effect
-                particles.forEach(p => {
-                    p.vx += (Math.random() - 0.5) * 0.5;
-                    p.vy += (Math.random() - 0.5) * 0.5;
-                });
-            });
+            setTimeout(() => {
+                trail.classList.add('fade-out');
+                setTimeout(() => trail.remove(), 1000);
+            }, 0);
         });
     </script>
 </body>
