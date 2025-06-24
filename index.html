@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Vasilije Stanković - Software Engineer & Educator | Building clean code and teaching others">
-    <meta name="keywords" content="software engineering, programming courses, web development, Vasilije Stanković">
+    <meta name="description" content="Vasilije Stanković - Software Engineer  | Building clean code">
+    <meta name="keywords" content="software engineering, programming courses, Vasilije Stanković">
     <title>Vasilije Stanković - Software Engineer </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -19,12 +19,9 @@
             --shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
             --light-bg: #f0f0f0;
             --light-text: #333;
-            --hacker-bg: #000;
-            --hacker-text: #00ff00;
-            --hacker-accent: #ffa500;
-            --glitch-red: #ff0000;
-            --glitch-blue: #00f0ff;
-            --glitch-green: #00ff00;
+            --mode2-bg: #000;
+            --mode2-text: #00ff00;
+            --mode2-accent: #ffa500;
         }
 
         * {
@@ -48,55 +45,14 @@
             color: var(--light-text);
         }
 
-        body.hacker-mode {
-            background: var(--hacker-bg);
-            color: var(--hacker-text);
+        body.mode2 {
+            background: var(--mode2-bg);
+            color: var(--mode2-text);
             font-family: 'Fira Code', monospace;
         }
 
-        body.hacker-mode * {
+        body.mode2 * {
             font-family: 'Fira Code', monospace !important;
-        }
-
-        body.glitch-mode {
-            background: #111;
-            color: var(--glitch-green);
-            animation: glitch-flicker 3s infinite;
-        }
-
-        body.glitch-mode * {
-            position: relative;
-            animation: glitch-text 1s infinite alternate;
-        }
-
-        body.glitch-mode .card,
-        body.glitch-mode .section {
-            animation: glitch-skew 2s infinite;
-        }
-
-        body.glitch-mode .hero,
-        body.glitch-mode .navbar,
-        body.glitch-mode footer {
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--glitch-green);
-        }
-
-        body.glitch-mode::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                rgba(0, 0, 0, 0.1) 0,
-                rgba(0, 0, 0, 0.1) 2px,
-                transparent 2px,
-                transparent 4px
-            );
-            pointer-events: none;
-            z-index: 999;
-            animation: flicker 0.1s infinite;
         }
 
         .loader {
@@ -135,7 +91,7 @@
             animation: fadeIn 1s ease infinite alternate;
         }
 
-        .hacker-loader, .glitch-loader {
+        .mode2-loader {
             position: fixed;
             top: 0;
             left: 0;
@@ -147,29 +103,17 @@
             align-items: center;
             z-index: 9998;
             font-family: 'Fira Code', monospace;
+            background: var(--mode2-bg);
+            color: var(--mode2-text);
         }
 
-        .hacker-loader {
-            background: var(--hacker-bg);
-            color: var(--hacker-text);
-        }
-
-        .glitch-loader {
-            background: #000;
-            color: var(--glitch-green);
-        }
-
-        .hacker-loader.active, .glitch-loader.active {
+        .mode2-loader.active {
             display: flex;
         }
 
-        .hacker-loader-text, .glitch-loader-text {
+        .mode2-loader-text {
             font-size: 1.5rem;
             animation: typing 2s steps(40) infinite;
-        }
-
-        .glitch-loader-text {
-            animation: glitch-text 0.5s infinite;
         }
 
         .terminal {
@@ -177,14 +121,14 @@
             bottom: 1rem;
             right: 1rem;
             width: 300px;
-            background: var(--hacker-bg);
-            border: 1px solid var(--hacker-text);
+            background: var(--mode2-bg);
+            border: 1px solid var(--mode2-text);
             border-radius: 5px;
             padding: 0.5rem;
             display: none;
             flex-direction: column;
             z-index: 1001;
-            color: var(--hacker-text);
+            color: var(--mode2-text);
             font-family: 'Fira Code', monospace;
         }
 
@@ -195,7 +139,7 @@
         .terminal-input {
             background: none;
             border: none;
-            color: var(--hacker-text);
+            color: var(--mode2-text);
             font-family: 'Fira Code', monospace;
             width: 100%;
             outline: none;
@@ -228,9 +172,9 @@
             transform: translateY(0);
         }
 
-        body.hacker-mode .navbar {
-            background: var(--hacker-bg);
-            border-bottom: 1px solid var(--hacker-text);
+        body.mode2 .navbar {
+            background: var(--mode2-bg);
+            border-bottom: 1px solid var(--mode2-text);
         }
 
         .nav-content {
@@ -249,8 +193,8 @@
             transition: transform 0.3s ease;
         }
 
-        body.hacker-mode .nav-logo {
-            color: var(--hacker-text);
+        body.mode2 .nav-logo {
+            color: var(--mode2-text);
         }
 
         .nav-logo:hover {
@@ -263,7 +207,7 @@
             list-style: none;
         }
 
-        body.hacker-mode .nav-menu {
+        body.mode2 .nav-menu {
             gap: 1rem;
         }
 
@@ -275,14 +219,14 @@
             transition: color 0.3s ease;
         }
 
-        body.hacker-mode .nav-menu a {
-            color: var(--hacker-text);
+        body.mode2 .nav-menu a {
+            color: var(--mode2-text);
             text-transform: lowercase;
         }
 
-        body.hacker-mode .nav-menu a::before {
+        body.mode2 .nav-menu a::before {
             content: '> ';
-            color: var(--hacker-accent);
+            color: var(--mode2-accent);
         }
 
         .nav-menu a::after {
@@ -301,16 +245,16 @@
             outline: none;
         }
 
-        body.hacker-mode .nav-menu a:hover, body.hacker-mode .nav-menu a:focus {
-            color: var(--hacker-accent);
+        body.mode2 .nav-menu a:hover, body.mode2 .nav-menu a:focus {
+            color: var(--mode2-accent);
         }
 
         .nav-menu a:hover::after {
             width: 100%;
         }
 
-        body.hacker-mode .nav-menu a::after {
-            background: var(--hacker-accent);
+        body.mode2 .nav-menu a::after {
+            background: var(--mode2-accent);
         }
 
         .hamburger {
@@ -327,8 +271,8 @@
             transition: all 0.3s ease;
         }
 
-        body.hacker-mode .hamburger span {
-            background: var(--hacker-text);
+        body.mode2 .hamburger span {
+            background: var(--mode2-text);
         }
 
         .theme-toggle, .language-toggle {
@@ -341,8 +285,8 @@
             border: none;
         }
 
-        body.hacker-mode .theme-toggle, body.hacker-mode .language-toggle {
-            color: var(--hacker-text);
+        body.mode2 .theme-toggle, body.mode2 .language-toggle {
+            color: var(--mode2-text);
         }
 
         .theme-toggle:hover, .language-toggle:hover {
@@ -350,11 +294,11 @@
             outline: none;
         }
 
-        body.hacker-mode .theme-toggle:hover, body.hacker-mode .language-toggle:hover {
-            color: var(--hacker-accent);
+        body.mode2 .theme-toggle:hover, body.mode2 .language-toggle:hover {
+            color: var(--mode2-accent);
         }
 
-        .hacker-toggle {
+        .mode2-toggle {
             position: fixed;
             bottom: 1rem;
             right: 1rem;
@@ -365,7 +309,7 @@
             font-family: 'Fira Code', monospace;
         }
 
-        .hacker-toggle:hover {
+        .mode2-toggle:hover {
             color: var(--accent);
         }
 
@@ -379,25 +323,17 @@
             background: linear-gradient(to bottom, #0f1e2a, #1a1a2f);
         }
 
-        body.hacker-mode .hero {
-            background: var(--hacker-bg);
+        body.mode2 .hero {
+            background: var(--mode2-bg);
         }
 
-        #hero-canvas, #matrix-canvas {
+        #hero-canvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 0;
-        }
-
-        #matrix-canvas {
-            display: none;
-        }
-
-        body.glitch-mode #matrix-canvas.active {
-            display: block;
         }
 
         .hero-content {
@@ -408,7 +344,7 @@
             z-index: 1;
         }
 
-        body.hacker-mode .hero-content {
+        body.mode2 .hero-content {
             text-align: left;
         }
 
@@ -419,9 +355,9 @@
             animation: fadeInDown 1s ease;
         }
 
-        body.hacker-mode .hero .name {
+        body.mode2 .hero .name {
             font-size: 2.5rem;
-            color: var(--hacker-text);
+            color: var(--mode2-text);
             animation: typing 2s steps(30);
         }
 
@@ -433,7 +369,7 @@
             opacity: 0;
         }
 
-        body.hacker-mode .hero p {
+        body.mode2 .hero p {
             font-size: 1.2rem;
             animation: typing 2s steps(40) 0.5s forwards;
         }
@@ -448,12 +384,8 @@
             loading: lazy;
         }
 
-        body.hacker-mode .profile-img {
+        body.mode2 .profile-img {
             display: none;
-        }
-
-        body.glitch-mode .profile-img {
-            filter: url(#glitch-filter);
         }
 
         .contact-bar {
@@ -465,7 +397,7 @@
             opacity: 0;
         }
 
-        body.hacker-mode .contact-bar {
+        body.mode2 .contact-bar {
             justify-content: flex-start;
             flex-direction: column;
             gap: 0.5rem;
@@ -481,10 +413,10 @@
             transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
         }
 
-        body.hacker-mode .contact-item {
+        body.mode2 .contact-item {
             background: none;
             padding: 0;
-            color: var(--hacker-text);
+            color: var(--mode2-text);
         }
 
         .contact-item:hover {
@@ -493,10 +425,10 @@
             box-shadow: 0 5px 15px rgba(0,255,136,0.2);
         }
 
-        body.hacker-mode .contact-item:hover {
+        body.mode2 .contact-item:hover {
             transform: none;
             background: none;
-            color: var(--hacker-accent);
+            color: var(--mode2-accent);
         }
 
         .container {
@@ -506,7 +438,7 @@
             perspective: 1000px;
         }
 
-        body.hacker-mode .container {
+        body.mode2 .container {
             padding: 2rem 1rem;
         }
 
@@ -522,7 +454,7 @@
             transform: translateY(0) scale(1);
         }
 
-        body.hacker-mode .section {
+        body.mode2 .section {
             margin-bottom: 2rem;
             animation: typing 1s steps(30);
         }
@@ -537,9 +469,9 @@
             animation: slideInLeft 0.8s ease forwards;
         }
 
-        body.hacker-mode h2 {
+        body.mode2 h2 {
             font-size: 1.5rem;
-            color: var(--hacker-text);
+            color: var(--mode2-text);
             text-transform: none;
             margin-bottom: 1rem;
         }
@@ -560,7 +492,7 @@
             width: 80px;
         }
 
-        body.hacker-mode h2::after {
+        body.mode2 h2::after {
             display: none;
         }
 
@@ -570,7 +502,7 @@
             gap: 2.5rem;
         }
 
-        body.hacker-mode .grid-2col {
+        body.mode2 .grid-2col {
             display: block;
         }
 
@@ -590,7 +522,7 @@
             transition-delay: calc(0.1s * var(--card-index));
         }
 
-        body.hacker-mode .card {
+        body.mode2 .card {
             background: none;
             border: none;
             padding: 1rem 0;
@@ -603,16 +535,16 @@
             background: rgba(0,255,136,0.05);
         }
 
-        body.hacker-mode .card:hover {
+        body.mode2 .card:hover {
             transform: none;
             background: none;
         }
 
-        body.hacker-mode #skills .card {
+        body.mode2 #skills .card {
             display: none;
         }
 
-        body.hacker-mode #skills .skills-json {
+        body.mode2 #skills .skills-json {
             display: block;
             background: rgba(255,255,255,0.05);
             padding: 1rem;
@@ -629,9 +561,10 @@
             margin-bottom: 2.5rem;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
-        body.hacker-mode .project-card, body.hacker-mode .course-card {
+        body.mode2 .project-card, body.mode2 .course-card {
             margin-bottom: 1rem;
         }
 
@@ -642,7 +575,7 @@
             margin: 1.5rem 0;
         }
 
-        body.hacker-mode .project-tech, body.hacker-mode .course-tech {
+        body.mode2 .project-tech, body.mode2 .course-tech {
             display: inline;
         }
 
@@ -662,9 +595,9 @@
             opacity: 1;
         }
 
-        body.hacker-mode .tech-tag {
+        body.mode2 .tech-tag {
             background: none;
-            color: var(--hacker-accent);
+            color: var(--mode2-accent);
             padding: 0;
             margin: 0 0.5rem;
             display: inline;
@@ -675,27 +608,22 @@
             background: var(--accent);
         }
 
-        body.hacker-mode .tech-tag:hover {
+        body.mode2 .tech-tag:hover {
             transform: none;
-            color: var(--hacker-text);
+            color: var(--mode2-text);
         }
 
-        .course-card {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .course-card:hover {
+        .course-card:hover, .project-card:hover {
             background: rgba(0,255,136,0.05);
             transform: translateY(-10px) scale(1.02);
         }
 
-        body.hacker-mode .course-card:hover {
+        body.mode2 .course-card:hover, body.mode2 .project-card:hover {
             transform: none;
             background: none;
         }
 
-        .course-details {
+        .course-details, .project-details {
             display: none;
             margin-top: 1.5rem;
             padding: 1.5rem;
@@ -704,7 +632,7 @@
             animation: slideIn 0.5s ease;
         }
 
-        body.hacker-mode .course-details {
+        body.mode2 .course-details, body.mode2 .project-details {
             background: none;
             padding: 0.5rem 0;
         }
@@ -723,7 +651,7 @@
             transition: transform 0.3s ease;
         }
 
-        body.hacker-mode .course-preview {
+        body.mode2 .course-preview {
             display: none;
         }
 
@@ -738,7 +666,7 @@
             margin-top: 2rem;
         }
 
-        body.hacker-mode .social-share {
+        body.mode2 .social-share {
             justify-content: flex-start;
         }
 
@@ -751,9 +679,9 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        body.hacker-mode .share-btn {
+        body.mode2 .share-btn {
             background: none;
-            color: var(--hacker-text);
+            color: var(--mode2-text);
             padding: 0;
         }
 
@@ -762,9 +690,9 @@
             box-shadow: 0 5px 15px rgba(0,255,136,0.3);
         }
 
-        body.hacker-mode .share-btn:hover {
+        body.mode2 .share-btn:hover {
             transform: none;
-            color: var(--hacker-accent);
+            color: var(--mode2-accent);
         }
 
         .back-to-top {
@@ -785,10 +713,10 @@
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
-        body.hacker-mode .back-to-top {
+        body.mode2 .back-to-top {
             background: none;
-            color: var(--hacker-text);
-            border: 1px solid var(--hacker-text);
+            color: var(--mode2-text);
+            border: 1px solid var(--mode2-text);
         }
 
         .back-to-top.visible {
@@ -801,9 +729,9 @@
             transform: scale(1.1);
         }
 
-        body.hacker-mode .back-to-top:hover {
+        body.mode2 .back-to-top:hover {
             transform: none;
-            color: var(--hacker-accent);
+            color: var(--mode2-accent);
         }
 
         footer {
@@ -814,9 +742,9 @@
             border-top: 1px solid var(--secondary);
         }
 
-        body.hacker-mode footer {
-            background: var(--hacker-bg);
-            border-top: 1px solid var(--hacker-text);
+        body.mode2 footer {
+            background: var(--mode2-bg);
+            border-top: 1px solid var(--mode2-text);
             text-align: left;
         }
 
@@ -828,7 +756,7 @@
             align-items: center;
         }
 
-        body.hacker-mode .footer-content {
+        body.mode2 .footer-content {
             align-items: flex-start;
         }
 
@@ -838,7 +766,7 @@
             margin-bottom: 1rem;
         }
 
-        body.hacker-mode .footer-links {
+        body.mode2 .footer-links {
             flex-direction: column;
             gap: 0.5rem;
         }
@@ -849,8 +777,8 @@
             transition: color 0.3s ease, transform 0.3s ease;
         }
 
-        body.hacker-mode .footer-links a {
-            color: var(--hacker-text);
+        body.mode2 .footer-links a {
+            color: var(--mode2-text);
         }
 
         .footer-links a:hover {
@@ -858,8 +786,8 @@
             transform: scale(1.1);
         }
 
-        body.hacker-mode .footer-links a:hover {
-            color: var(--hacker-accent);
+        body.mode2 .footer-links a:hover {
+            color: var(--mode2-accent);
             transform: none;
         }
 
@@ -869,7 +797,7 @@
             margin-bottom: 1rem;
         }
 
-        body.hacker-mode .social-icons {
+        body.mode2 .social-icons {
             flex-direction: column;
         }
 
@@ -879,8 +807,8 @@
             transition: color 0.3s ease, transform 0.3s ease;
         }
 
-        body.hacker-mode .social-icons a {
-            color: var(--hacker-text);
+        body.mode2 .social-icons a {
+            color: var(--mode2-text);
             font-size: 1rem;
         }
 
@@ -889,8 +817,8 @@
             transform: scale(1.2) rotate(5deg);
         }
 
-        body.hacker-mode .social-icons a:hover {
-            color: var(--hacker-accent);
+        body.mode2 .social-icons a:hover {
+            color: var(--mode2-accent);
             transform: none;
         }
 
@@ -898,8 +826,28 @@
             margin-bottom: 1rem;
         }
 
-        body.hacker-mode .footer-contact {
+        body.mode2 .footer-contact {
             margin-bottom: 0.5rem;
+        }
+
+        .footer-contact a {
+            color: none;
+            text-decoration: none;
+            transition: none;
+        }
+
+        body.mode2 .contact a {
+            color: none;
+        }
+
+        .contact a:hover {
+            color: none;
+            transform: none;
+        }
+
+        body.mode2 .contact-mode a:hover {
+            color: none;
+            transform: none;
         }
 
         .footer-contact a {
@@ -908,17 +856,17 @@
             transition: color 0.3s ease, transform 0.3s ease;
         }
 
-        body.hacker-mode .footer-contact a {
-            color: var(--hacker-text);
+        body.mode2 .footer-contact a {
+            color: var(--mode2-text);
         }
 
         .footer-contact a:hover {
-            color: var(--secondary);
-            transform: scale(1.1);
+            color: var(--text);
+            transform: var(--scale(1.1));
         }
 
-        body.hacker-mode .footer-contact a:hover {
-            color: var(--hacker-accent);
+        body.mode2 .footer-contact a:hover {
+            color: var(--mode2-text);
             transform: none;
         }
 
@@ -927,9 +875,9 @@
             color: var(--text);
         }
 
-        body.hacker-mode .footer-copyright {
+        body.mode2 .footer-copyright {
             font-size: 0.8rem;
-            color: var(--hacker-text);
+            color: var(--mode2-text);
         }
 
         #contact-form input,
@@ -944,11 +892,11 @@
             transition: all 0.3s ease;
         }
 
-        body.hacker-mode #contact-form input,
-        body.hacker-mode #contact-form textarea {
-            background: var(--hacker-bg);
-            border: 1px solid var(--hacker-text);
-            color: var(--hacker-text);
+        body.mode2 #contact-form input,
+        body.mode2 #contact-form textarea {
+            background: var(--mode2-bg);
+            border: 1px solid var(--mode2-text);
+            color: var(--mode2-text);
             border-radius: 0;
         }
 
@@ -959,9 +907,9 @@
             outline: none;
         }
 
-        body.hacker-mode #contact-form input:focus,
-        body.hacker-mode #contact-form textarea:focus {
-            border-color: var(--hacker-accent);
+        body.mode2 #contact-form input:focus,
+        body.mode2 #contact-form textarea:focus {
+            border-color: var(--mode2-accent);
             box-shadow: none;
         }
 
@@ -975,10 +923,10 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        body.hacker-mode #contact-form button {
+        body.mode2 #contact-form button {
             background: none;
-            color: var(--hacker-text);
-            border: 1px solid var(--hacker-text);
+            color: var(--mode2-text);
+            border: 1px solid var(--mode2-text);
             border-radius: 0;
         }
 
@@ -987,10 +935,10 @@
             box-shadow: 0 5px 15px rgba(0,255,136,0.3);
         }
 
-        body.hacker-mode #contact-form button:hover {
+        body.mode2 #contact-form button:hover {
             transform: none;
-            color: var(--hacker-accent);
-            border-color: var(--hacker-accent);
+            color: var(--mode2-accent);
+            border-color: var(--mode2-accent);
         }
 
         .cursor-trail {
@@ -1000,17 +948,12 @@
             font-size: 12px;
             color: var(--secondary);
             opacity: 0.8;
-            transition: opacity 1s ease, transform 0.5s ease;
+            transition: opacity 0.5s ease, transform 0.5s ease;
             z-index: 1002;
         }
 
-        body.hacker-mode .cursor-trail {
-            color: var(--hacker-text);
-        }
-
-        body.glitch-mode .cursor-trail {
-            color: var(--glitch-green);
-            animation: glitch-text 0.5s infinite;
+        body.mode2 .cursor-trail {
+            color: var(--mode2-text);
         }
 
         body.light-mode .cursor-trail {
@@ -1026,29 +969,11 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes scaleIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
         @keyframes fadeIn { 0% { opacity: 0.5; } 100% { opacity: 1; } }
-        @keyframes glitch-flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
-        @keyframes glitch-text {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); color: var(--glitch-red); }
-            40% { transform: translate(2px, -2px); color: var(--glitch-blue); }
-            60% { transform: translate(-2px, 0); color: var(--glitch-green); }
-            80% { transform: translate(2px, 2px); }
-            100% { transform: translate(0); }
-        }
-        @keyframes glitch-skew {
-            0% { transform: skew(0deg); }
-            20% { transform: skew(5deg); }
-            40% { transform: skew(-5deg); }
-            60% { transform: skew(3deg); }
-            80% { transform: skew(-3deg); }
-            100% { transform: skew(0deg); }
-        }
-        @keyframes flicker { 0%, 100% { opacity: 0.8; } 50% { opacity: 0.6; } }
         @keyframes typing { 0% { width: 0; } 50% { width: 100%; } 100% { width: 0; } }
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes zoomIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0); } }
         @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes popIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
@@ -1072,7 +997,7 @@
                 transform: translateX(-100%);
                 transition: transform 0.3s ease;
             }
-            body.hacker-mode .nav-menu { background: var(--hacker-bg); }
+            body.mode2 .nav-menu { background: var(--mode2-bg); }
             .nav-menu.active { transform: translateX(0); }
             .hamburger { display: flex; }
             .terminal { width: 90%; right: 5%; }
@@ -1089,28 +1014,14 @@
     </style>
 </head>
 <body>
-    <svg>
-        <defs>
-            <filter id="glitch-filter">
-                <feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="1" result="noise"/>
-                <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="B"/>
-            </filter>
-        </defs>
-    </svg>
-
     <div class="loader">
         <div class="loader-circle"></div>
         <div class="loader-text">Code Loading...</div>
     </div>
 
-    <div class="hacker-loader">
-        <div class="hacker-loader-text">sudo access granted...</div>
-        <div class="hacker-loader-text">Loading hidden interface...</div>
-    </div>
-
-    <div class="glitch-loader">
-        <div class="glitch-loader-text">System Malfunction...</div>
-        <div class="glitch-loader-text">Entering Glitch Dimension...</div>
+    <div class="mode2-loader">
+        <div class="mode2-loader-text">sudo access granted...</div>
+        <div class="mode2-loader-text">Loading hidden interface...</div>
     </div>
 
     <nav class="navbar" aria-label="Main navigation">
@@ -1138,7 +1049,7 @@
         </div>
     </nav>
 
-    <div class="hacker-toggle" onclick="toggleHackerMode()" aria-label="Toggle Hacker Mode">terminal</div>
+    <div class="mode2-toggle" onclick="toggleMode2()" aria-label="Toggle Mode 2">terminal</div>
 
     <div class="terminal">
         <div class="terminal-output"></div>
@@ -1147,10 +1058,9 @@
 
     <header class="hero" id="home">
         <canvas id="hero-canvas" aria-hidden="true"></canvas>
-        <canvas id="matrix-canvas" aria-hidden="true"></canvas>
         <div class="hero-content">
             <img src="slika.jpg" alt="Vasilije Stanković profile picture" class="profile-img" loading="lazy">
-            <h1 class="name glitch">Vasilije Stanković</h1>
+            <h1 class="name">Vasilije Stanković</h1>
             <p class="typing" data-lang-key="hero-text">Building, debugging, and learning as I go.</p>
             <div class="contact-bar">
                 <div class="contact-item" tabindex="0">
@@ -1175,25 +1085,25 @@
 
     <main class="container">
         <section class="section" id="about">
-            <h2 class="glitch" data-lang-key="about">O meni</h2>
+            <h2 data-lang-key="about">O meni</h2>
             <p class="typing" data-lang-key="about-text">Zdravo! Ja sam Vasilije, student softverskog inženjerstva. Radim na izgradnji softvera i podučavam programiranje. Fokusiran sam na pravljenje korisnih aplikacija i učenje kroz praktičan rad.</p>
         </section>
 
         <div class="grid-2col">
             <section class="section" id="skills">
-                <h2 class="glitch" data-lang-key="skills">Veštine</h2>
+                <h2 data-lang-key="skills">Veštine</h2>
                 <div class="skills-json">{
-                    "languages": ["C", "Java", "Python"],
-                    "technologies": ["Git", "Linux", "JavaFX", "TensorFlow", "OpenCV"],
+                    "languages": ["C", "Java", "Python", "Swing"],
+                    "technologies": ["Git", "Linux", "JavaFX", "Java Swing", "SQL Backend", "TensorFlow", "OpenCV"],
                     "additional": ["Paralelno programiranje", "AI", "Computer Vision", "Optimizacija"]
                 }</div>
                 <div class="card" style="--card-index: 1;" tabindex="0">
                     <h3 data-lang-key="programming">Programiranje</h3>
-                    <p>C, Java, Python</p>
+                    <p>C, Java, Java Swing, Python</p>
                 </div>
                 <div class="card" style="--card-index: 2;" tabindex="0">
                     <h3 data-lang-key="technologies">Tehnologije</h3>
-                    <p>Git, Linux, JavaFX, TensorFlow, OpenCV</p>
+                    <p>Git, Linux, JavaFX, Java Swing, SQL Backend, TensorFlow, OpenCV</p>
                 </div>
                 <div class="card" style="--card-index: 3;" tabindex="0">
                     <h3 data-lang-key="additional">Dodatne stvari</h3>
@@ -1202,7 +1112,7 @@
             </section>
 
             <section class="section">
-                <h2 class="glitch" data-lang-key="education">Obrazovanje</h2>
+                <h2 data-lang-key="education">Obrazovanje</h2>
                 <div class="card" style="--card-index: 1;" tabindex="0">
                     <h3>Računarski Fakultet Beograd</h3>
                     <p>BSc Softversko Inženjerstvo</p>
@@ -1212,44 +1122,65 @@
         </div>
 
         <section class="section" id="projects">
-            <h2 class="glitch" data-lang-key="projects">Projekti</h2>
-            <div class="project-card card" style="--card-index: 1;" tabindex="0">
+            <h2 data-lang-key="projects">Projekti</h2>
+            <div class="project-card card" style="--card-index: 1;" onclick="toggleDetails(this)" tabindex="0">
                 <h3>Smart Room Planner</h3>
                 <div class="project-tech">
-                    <span class="tech-tag" style="--tag-index: 1;" tabindex="0">Java</span>
-                    <span class="tech-tag" style="--tag-index: 2;" tabindex="0">JavaFX</span>
-                    <span class="tech-tag" style="--tag-index: 3;" tabindex="0">OOP</span>
+                    <span class="tech-tag" style="--tag-index: 1;">Java</span>
+                    <span class="tech-tag" style="--tag-index: 2;">JavaFX</span>
+                    <span class="tech-tag" style="--tag-index: 3;">OOP</span>
                 </div>
-                <p class="typing" data-lang-key="project1">Aplikacija za planiranje prostora sa interaktivnim GUI-jem. Koristi MVC i standardne dizajn obrasce. <a href="https://github.com/Vaske10024/smart-room-planner" target="_blank">GitHub</a> | <a href="https://demo.smartroomplanner.com" target="_blank">Demo</a></p>
+                <p class="project-text typing">Aplikacija za planiranje prostora sa interaktivnim GUI-jem. Koristi MVC i standardne dizajn obrasce. <a href="https://github.com/Vaske10024/smart-room-planner" target="_blank">GitHub</a> | <a href="https://demo.smartroomplanner.com" target="_blank">Demo</a></p>
+                <div class="project-details">
+                    <p class="typing">More details coming soon...</p>
+                </div>
             </div>
-            <div class="project-card card" style="--card-index: 2;" tabindex="0">
-                <h3>AI Card Predictor</h3>
+            <div class="project-card card" style="--card-index: 2;" onclick="toggleDetails(this)" tabindex="0">
+                <h3>AI App</h3>
                 <div class="project-tech">
-                    <span class="tech-tag" style="--tag-index: 1;" tabindex="0">Python</span>
-                    <span class="tech-tag" style="--tag-index: 2;" tabindex="0">TensorFlow</span>
-                    <span class="tech-tag" style="--tag-index: 3;" tabindex="0">ML</span>
+                    <span class="tech-tag" style="--tag-index: 1;">Python</span>
+                    <span class="tech-tag" style="--tag-index: 2;">TensorFlow</span>
+                    <span class="tech-tag" style="--tag-index: 3;">ML</span>
                 </div>
-                <p class="typing" data-lang-key="project2">Model za predviđanje karata sa 79% tačnosti. Uključuje obradu podataka i neuronske mreže. <a href="https://github.com/Vaske10024/ai-card-predictor" target="_blank">GitHub</a> | <a href="https://demo.aicardpredictor.com" target="_blank">Demo</a></p>
+                <p class="project-text typing">Model za predviđanje karata sa 79% tačnosti. Uključuje obradu podataka i neuronske mreže. <a href="https://github.com/Vaske10024/ai-card-predictor" target="_blank">GitHub</a> | <a href="https://demo.aicardpredictor.com" target="_blank">Demo</a></p>
+                <div class="project-details">
+                    <p class="typing">More details coming soon...</p>
+                </div>
             </div>
-            <div class="project-card card" style="--card-index: 3;" tabindex="0">
+            <div class="project-card card" style="--card-index: 3;" onclick="toggleDetails(this)" tabindex="0">
                 <h3>Sign Language Detector</h3>
                 <div class="project-tech">
-                    <span class="tech-tag" style="--tag-index: 1;" tabindex="0">Python</span>
-                    <span class="tech-tag" style="--tag-index: 2;" tabindex="0">OpenCV</span>
-                    <span class="tech-tag" style="--tag-index: 3;" tabindex="0">MediaPipe</span>
+                    <span class="tech-tag" style="--tag-index: 1;">Python</span>
+                    <span class="tech-tag" style="--tag-index: 2;">OpenCV</span>
+                    <span class="tech-tag" style="--tag-index: 3;">MediaPipe</span>
                 </div>
-                <p class="typing" data-lang-key="project3">Real-time detekcija znakovnog jezika sa praćenjem pokreta ruku. <a href="https://github.com/Vaske10024/sign-language-detector" target="_blank">GitHub</a> | <a href="https://demo.signlanguagedetector.com" target="_blank">Demo</a></p>
+                <p class="project-text typing">Real-time detekcija znakovnog jezika sa praćenjem pokreta ruku. <a href="https://github.com/Vaske10024/sign-language-detector" target="_blank">GitHub</a> | <a href="https://demo.signlanguagedetector.com" target="_blank">Demo</a></p>
+                <div class="project-details">
+                    <p class="typing">More details coming soon...</p>
+                </div>
+            </div>
+            <div class="project-card card" style="--card-index: 4;" onclick="toggleDetails(this)" tabindex="0">
+                <h3>Aplikacija za Psihoterapeute</h3>
+                <div class="project-tech">
+                    <span class="tech-tag" style="--tag-index: 1;">Java</span>
+                    <span class="tech-tag" style="--tag-index: 2;">JavaFX</span>
+                    <span class="tech-tag" style="--tag-index: 3;">SQL</span>
+                </div>
+                <p class="project-text typing">JavaFX aplikacija za zakazivanje seansi, praćenje plaćanja, evidenciju prethodnih i budućih seansi, sa statistikom za svakog terapeuta. Povezana sa SQL Workbench bazom podataka. <a href="https://github.com/Vaske10024/psychotherapist-app" target="_blank">GitHub</a> | <a href="https://demo.psychotherapistapp.com" target="_blank">Demo</a></p>
+                <div class="project-details">
+                    <p class="typing">More details coming soon...</p>
+                </div>
             </div>
         </section>
 
         <section class="section" id="courses">
-            <h2 class="glitch" data-lang-key="courses">Kursevi</h2>
+            <h2 data-lang-key="courses">Kursevi</h2>
             <div class="course-card card" style="--card-index: 1;" onclick="toggleDetails(this)" tabindex="0">
                 <h3>Mastering C Programming</h3>
                 <div class="course-tech">
-                    <span class="tech-tag" style="--tag-index: 1;" tabindex="0">C</span>
-                    <span class="tech-tag" style="--tag-index: 2;" tabindex="0">Beginner</span>
-                    <span class="tech-tag" style="--tag-index: 3;" tabindex="0">Core Concepts</span>
+                    <span class="tech-tag" style="--tag-index: 1;">C</span>
+                    <span class="tech-tag" style="--tag-index: 2;">Beginner</span>
+                    <span class="tech-tag" style="--tag-index: 3;">Core Concepts</span>
                 </div>
                 <p class="typing" data-lang-key="course1">Nauči osnove programiranja u C-u kroz praktične primere.</p>
                 <div class="course-details">
@@ -1261,9 +1192,9 @@
             <div class="course-card card" style="--card-index: 2;" onclick="toggleDetails(this)" tabindex="0">
                 <h3>Advanced C++ Techniques</h3>
                 <div class="course-tech">
-                    <span class="tech-tag" style="--tag-index: 1;" tabindex="0">C++</span>
-                    <span class="tech-tag" style="--tag-index: 2;" tabindex="0">Advanced</span>
-                    <span class="tech-tag" style="--tag-index: 3;" tabindex="0">Algorithms</span>
+                    <span class="tech-tag" style="--tag-index: 1;">C++</span>
+                    <span class="tech-tag" style="--tag-index: 2;">Advanced</span>
+                    <span class="tech-tag" style="--tag-index: 3;">Algorithms</span>
                 </div>
                 <p class="typing" data-lang-key="course2">Nauči napredne C++ tehnike: STL, šabloni i optimizacija.</p>
                 <div class="course-details">
@@ -1275,9 +1206,9 @@
             <div class="course-card card" style="--card-index: 3;" onclick="toggleDetails(this)" tabindex="0">
                 <h3>Python for AI</h3>
                 <div class="course-tech">
-                    <span class="tech-tag" style="--tag-index: 1;" tabindex="0">Python</span>
-                    <span class="tech-tag" style="--tag-index: 2;" tabindex="0">AI</span>
-                    <span class="tech-tag" style="--tag-index: 3;" tabindex="0">TensorFlow</span>
+                    <span class="tech-tag" style="--tag-index: 1;">Python</span>
+                    <span class="tech-tag" style="--tag-index: 2;">AI</span>
+                    <span class="tech-tag" style="--tag-index: 3;">TensorFlow</span>
                 </div>
                 <p class="typing" data-lang-key="course3">Nauči Python za razvoj AI modela i obradu podataka.</p>
                 <div class="course-details">
@@ -1289,7 +1220,7 @@
         </section>
 
         <section class="section" id="contact">
-            <h2 class="glitch" data-lang-key="contact">Kontakt</h2>
+            <h2 data-lang-key="contact">Kontakt</h2>
             <div class="card" style="--card-index: 1;" tabindex="0">
                 <p class="typing" data-lang-key="contact-text">Imaš ideju ili projekat? Piši mi, pa možemo raditi zajedno.</p>
                 <form id="contact-form" style="margin-top: 2rem;" aria-label="Contact form">
@@ -1386,7 +1317,7 @@
                 technologies: "Tehnologije",
                 additional: "Dodatne stvari",
                 education: "Obrazovanje",
-                project1: "Aplikacija za planiranje prostora sa interaktivnim GUI-jem. Koristi MVC i standardne dizajn obrasce.",
+                project1: "Aplikacija za planiranje prostora sa interaktivnim GUI-jem.",
                 project2: "Model za predviđanje karata sa 79% tačnosti. Uključuje obradu podataka i neuronske mreže.",
                 project3: "Real-time detekcija znakovnog jezika sa praćenjem pokreta ruku.",
                 course1: "Nauči osnove programiranja u C-u kroz praktične primere.",
@@ -1418,67 +1349,45 @@
             }, 800);
         });
 
-        function toggleHackerMode() {
+        function toggleMode2() {
             const body = document.body;
-            const hackerLoader = document.querySelector('.hacker-loader');
+            const mode2Loader = document.querySelector('.mode2-loader');
             const terminal = document.querySelector('.terminal');
-            if (!body.classList.contains('hacker-mode') && !body.classList.contains('glitch-mode')) {
-                hackerLoader.classList.add('active');
+            if (!body.classList.contains('mode2')) {
+                mode2Loader.classList.add('active');
                 setTimeout(() => {
-                    body.classList.add('hacker-mode');
-                    hackerLoader.classList.remove('active');
+                    body.classList.add('mode2');
+                    mode2Loader.classList.remove('active');
                     terminal.classList.add('active');
                 }, 1500);
             } else {
-                body.classList.remove('hacker-mode');
+                body.classList.remove('mode2');
                 terminal.classList.remove('active');
             }
         }
 
-        function toggleGlitchMode() {
+        function toggleTheme() {
             const body = document.body;
-            const glitchLoader = document.querySelector('.glitch-loader');
-            const terminal = document.querySelector('.terminal');
-            if (!body.classList.contains('glitch-mode')) {
-                glitchLoader.classList.add('active');
-                setTimeout(() => {
-                    body.classList.add('glitch-mode');
-                    body.classList.remove('hacker-mode', 'light-mode');
-                    glitchLoader.classList.remove('active');
-                    terminal.classList.add('active');
-                }, 1500);
+            const themeToggle = document.querySelector('.theme-toggle');
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                themeToggle.classList.remove('fa-moon');
+                themeToggle.classList.add('fa-sun');
             } else {
-                body.classList.remove('glitch-mode');
-                terminal.classList.remove('active');
-                document.querySelector('#matrix-canvas').classList.remove('active');
+                body.classList.add('light-mode');
+                body.classList.remove('mode2');
+                themeToggle.classList.remove('fa-sun');
+                themeToggle.classList.add('fa-moon');
+                document.querySelector('.terminal').classList.remove('active');
             }
         }
-
-        let clickCount = 0;
-        let clickTimeout;
-        document.querySelector('.hacker-toggle').addEventListener('click', () => {
-            clickCount++;
-            if (clickCount >= 5) {
-                toggleGlitchMode();
-                clickCount = 0;
-            }
-            clearTimeout(clickTimeout);
-            clickTimeout = setTimeout(() => clickCount = 0, 2000);
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'g') {
-                toggleGlitchMode();
-            }
-        });
 
         const terminal = document.querySelector('.terminal');
         const terminalInput = document.querySelector('.terminal-input');
         const terminalOutput = document.querySelector('.terminal-output');
 
         const commands = {
-            '/help': 'Available commands: /help, /glitch, /hack, /reset, /theme, /lang',
-            '/glitch': 'Enter the Glitch Dimension',
+            '/help': 'Available commands: /help, /hack, /reset, /theme, /lang',
             '/hack': 'Trigger Matrix code rain',
             '/reset': 'Exit all modes',
             '/theme': 'Toggle light/dark mode',
@@ -1491,12 +1400,10 @@
                 terminalOutput.innerHTML += `<p>> ${command}</p>`;
                 if (commands[command]) {
                     terminalOutput.innerHTML += `<p>${commands[command]}</p>`;
-                    if (command === '/glitch') toggleGlitchMode();
-                    else if (command === '/hack') triggerMatrixRain();
+                    if (command === '/hack') triggerMatrixRain();
                     else if (command === '/reset') {
-                        document.body.classList.remove('hacker-mode', 'glitch-mode', 'light-mode');
+                        document.body.classList.remove('mode2', 'light-mode');
                         terminal.classList.remove('active');
-                        document.querySelector('#matrix-canvas').classList.remove('active');
                     }
                     else if (command === '/theme') toggleTheme();
                     else if (command === '/lang') toggleLanguage();
@@ -1518,8 +1425,7 @@
         });
 
         function triggerMatrixRain() {
-            const canvas = document.getElementById('matrix-canvas');
-            canvas.classList.add('active');
+            const canvas = document.getElementById('hero-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -1546,25 +1452,9 @@
             const interval = setInterval(draw, 33);
             setTimeout(() => {
                 clearInterval(interval);
-                canvas.classList.remove('active');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                animateParticles();
             }, 10000);
-        }
-
-        function toggleTheme() {
-            const body = document.body;
-            const themeToggle = document.querySelector('.theme-toggle');
-            if (body.classList.contains('light-mode')) {
-                body.classList.remove('light-mode');
-                themeToggle.classList.remove('fa-moon');
-                themeToggle.classList.add('fa-sun');
-            } else {
-                body.classList.add('light-mode');
-                body.classList.remove('hacker-mode', 'glitch-mode');
-                themeToggle.classList.remove('fa-sun');
-                themeToggle.classList.add('fa-moon');
-                document.querySelector('.terminal').classList.remove('active');
-                document.querySelector('#matrix-canvas').classList.remove('active');
-            }
         }
 
         const sections = document.querySelectorAll('.section');
@@ -1604,9 +1494,9 @@
         });
 
         function toggleDetails(card) {
-            const details = card.querySelector('.course-details');
+            const details = card.querySelector('.course-details, .project-details');
             const isActive = details.classList.contains('active');
-            document.querySelectorAll('.course-details').forEach(detail => detail.classList.remove('active'));
+            document.querySelectorAll('.course-details, .project-details').forEach(detail => detail.classList.remove('active'));
             if (!isActive) details.classList.add('active');
         }
 
