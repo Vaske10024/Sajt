@@ -299,18 +299,27 @@
         }
 
         .mode2-toggle {
-            position: fixed;
-            bottom: 1rem;
-            right: 1rem;
             color: var(--secondary);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             cursor: pointer;
-            z-index: 1000;
             font-family: 'Fira Code', monospace;
+            text-transform: lowercase;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            padding: 0.5rem;
         }
 
         .mode2-toggle:hover {
             color: var(--accent);
+        }
+
+        body.mode2 .mode2-toggle {
+            color: var(--mode2-text);
+        }
+
+        body.mode2 .mode2-toggle:hover {
+            color: var(--mode2-accent);
         }
 
         .hero {
@@ -337,16 +346,16 @@
         }
 
         .hero-content {
-    max-width: var(--container);
-    text-align: center; /* Fixed typo */
-    padding: 0 2rem;
-    position: relative;
-    z-index: 1;
-}
+            max-width: var(--container);
+            text-align: center;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
 
-body.mode2 .hero-content {
-    text-align: center; /* Ensure center alignment in mode2 */
-}
+        body.mode2 .hero-content {
+            text-align: center;
+        }
 
         .hero .name {
             font-size: 4.5rem;
@@ -720,7 +729,6 @@ body.mode2 .hero-content {
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            вор: center;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1044,13 +1052,11 @@ body.mode2 .hero-content {
                     <button class="language-toggle" onclick="toggleLanguage()" aria-label="Toggle language">SR</button>
                 </li>
                 <li role="none">
-                    <button class="performance-toggle fas fa-bolt" onclick="togglePerformance()" aria-label="Toggle performance mode"></button>
+                    <button class="performance-toggle fas fa-bolt" onclick="togglePerformance()" aria-label="Toggle performance"></button>
                 </li>
             </ul>
         </div>
     </nav>
-
-    <div class="mode2-toggle" onclick="toggleMode2()" aria-label="Toggle Mode 2">terminal</div>
 
     <div class="terminal">
         <div class="terminal-output"></div>
@@ -1061,7 +1067,7 @@ body.mode2 .hero-content {
         <canvas id="hero-canvas" aria-hidden="true"></canvas>
         <div class="hero-content">
             <img src="slika.jpg" alt="Vasilije Stanković profile picture" class="profile-img" loading="lazy">
-            <h1 class="name">Vasilije Stanković</h1>
+            <h1 class="name">Vasilije Stankovic</h1>
             <p class="typing" data-lang-key="hero-text">Building, debugging, and learning as I go.</p>
             <div class="contact-bar">
                 <div class="contact-item" tabindex="0">
@@ -1133,7 +1139,6 @@ body.mode2 .hero-content {
                 </div>
                 <p class="project-text typing">Aplikacija za planiranje prostora sa interaktivnim GUI-jem. Koristi MVC i standardne dizajn obrasce. <a href="https://github.com/Vaske10024/smart-room-planner" target="_blank">GitHub</a> | <a href="https://demo.smartroomplanner.com" target="_blank">Demo</a></p>
                 <div class="project-details">
-                    <!-- OVDE SU DETALJI O TOM PROJEKTU -->
                     <p class="typing">More details coming soon...</p>
                 </div>
             </div>
@@ -1146,7 +1151,6 @@ body.mode2 .hero-content {
                 </div>
                 <p class="project-text typing">Model za predviđanje karata sa 79% tačnosti. Uključuje obradu podataka i neuronske mreže. <a href="https://github.com/Vaske10024/ai-card-predictor" target="_blank">GitHub</a> | <a href="https://demo.aicardpredictor.com" target="_blank">Demo</a></p>
                 <div class="project-details">
-                    <!-- OVDE SU DETALJI O TOM PROJEKTU -->
                     <p class="typing">More details coming soon...</p>
                 </div>
             </div>
@@ -1159,7 +1163,6 @@ body.mode2 .hero-content {
                 </div>
                 <p class="project-text typing">Real-time detekcija znakovnog jezika sa praćenjem pokreta ruku. <a href="https://github.com/Vaske10024/sign-language-detector" target="_blank">GitHub</a> | <a href="https://demo.signlanguagedetector.com" target="_blank">Demo</a></p>
                 <div class="project-details">
-                    <!-- OVDE SU DETALJI O TOM PROJEKTU -->
                     <p class="typing">More details coming soon...</p>
                 </div>
             </div>
@@ -1172,7 +1175,6 @@ body.mode2 .hero-content {
                 </div>
                 <p class="project-text typing">JavaFX aplikacija za zakazivanje seansi, praćenje plaćanja, evidenciju prethodnih i budućih seansi, sa statistikom za svakog terapeuta. Povezana sa SQL Workbench bazom podataka. <a href="https://github.com/Vaske10024/psychotherapist-app" target="_blank">GitHub</a> | <a href="https://demo.psychotherapistapp.com" target="_blank">Demo</a></p>
                 <div class="project-details">
-                    <!-- OVDE SU DETALJI O TOM PROJEKTU -->
                     <p class="typing">More details coming soon...</p>
                 </div>
             </div>
@@ -1215,7 +1217,7 @@ body.mode2 .hero-content {
                 <a href="#about" data-lang-key="about">O meni</a>
                 <a href="#skills" data-lang-key="skills">Veštine</a>
                 <a href="#projects" data-lang-key="projects">Projekti</a>
-                <a href="courses.html" data-lang-key="courses">Kursevi</a>
+                <a href="courses" data-lang-key="courses">Kursevi</a>
                 <a href="#contact" data-lang-key="contact">Kontakt</a>
             </div>
             <div class="social-icons">
@@ -1226,6 +1228,7 @@ body.mode2 .hero-content {
             <div class="footer-contact">
                 <a href="mailto:vasa.stankovic@gmail.com">vasa.stankovic@gmail.com</a>
             </div>
+            <button class="mode2-toggle" onclick="toggleMode2()" aria-label="Toggle terminal mode">terminal</button>
             <div class="footer-copyright">
                 © 2025 Vasilije Stanković. All rights reserved.
             </div>
@@ -1252,8 +1255,8 @@ body.mode2 .hero-content {
                 additional: "Additional Skills",
                 education: "Education",
                 project1: "App for room planning with an interactive GUI. Uses MVC and standard design patterns.",
-                project2: "Model for card prediction with 79% accuracy. Includes data processing and neural networks.",
-                project3: "Real-time sign language detection with hand movement tracking.",
+                project2: "Model for prediction with 79% accuracy. Includes data processing and neural networks.",
+                project3: "Real-time language detection with hand movement tracking.",
                 course1: "Learn C programming basics through practical examples.",
                 "course1-details": "Covers C basics: variables, loops, functions, and pointers. Designed for beginners.",
                 course2: "Learn advanced C++ techniques: STL, templates, and optimization.",
@@ -1371,12 +1374,8 @@ body.mode2 .hero-content {
         const terminalOutput = document.querySelector('.terminal-output');
 
         const commands = {
-            '/help': 'Available commands: /help, /hack, /reset, /theme, /lang, /perf',
-            '/hack': 'Trigger Matrix code rain',
-            '/reset': 'Exit all modes',
-            '/theme': 'Toggle light/dark mode',
-            '/lang': 'Toggle language (SR/EN)',
-            '/perf': 'Toggle performance optimization (cursor trails and hero animations)'
+            '/help': 'Available commands: /help, /theme',
+            '/theme': 'Toggle light/dark mode'
         };
 
         terminalInput.addEventListener('keydown', (e) => {
@@ -1385,15 +1384,7 @@ body.mode2 .hero-content {
                 terminalOutput.innerHTML += `<p>> ${command}</p>`;
                 if (commands[command]) {
                     terminalOutput.innerHTML += `<p>${commands[command]}</p>`;
-                    if (command === '/hack') triggerMatrixRain();
-                    else if (command === '/reset') {
-                        document.body.classList.remove('mode2', 'light-mode');
-                        terminal.classList.remove('active');
-                        if (isPerformanceOptimized) togglePerformance();
-                    }
-                    else if (command === '/theme') toggleTheme();
-                    else if (command === '/lang') toggleLanguage();
-                    else if (command === '/perf') togglePerformance();
+                    if (command === '/theme') toggleTheme();
                 } else {
                     terminalOutput.innerHTML += `<p>Unknown command. Type /help for available commands.</p>`;
                 }
@@ -1410,40 +1401,6 @@ body.mode2 .hero-content {
                 }
             }
         });
-
-        function triggerMatrixRain() {
-            if (isPerformanceOptimized) return;
-            const canvas = document.getElementById('hero-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
-            const fontSize = 14;
-            const columns = canvas.width / fontSize;
-            const drops = Array(Math.floor(columns)).fill(0);
-
-            function draw() {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#0F0';
-                ctx.font = `${fontSize}px Fira Code`;
-
-                for (let i = 0; i < drops.length; i++) {
-                    const text = chars.charAt(Math.random() * chars.length);
-                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                    drops[i]++;
-                }
-            }
-
-            const interval = setInterval(draw, 33);
-            setTimeout(() => {
-                clearInterval(interval);
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                if (!isPerformanceOptimized) animateParticles();
-            }, 10000);
-        }
 
         const sections = document.querySelectorAll('.section');
         const observer = new IntersectionObserver((entries) => {
