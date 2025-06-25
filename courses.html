@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Vasilije Stanković - Programming Courses">
+    <meta name="keywords" content="programming courses, C, C++, Python, AI, Vasilije Stanković">
+    <title>Vasilije Stanković - Courses</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f1419;
+            --secondary: #00ff88;
+            --accent: #00cc70;
+            --text: #f5f5f5;
+            --container: min(90%, 1200px);
+            --shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+            --light-bg: #f0f0f0;
+            --light-text: #333;
+            --mode2-bg: #000;
+            --mode2-text: #00ff00;
+            --mode2-accent: #ffa500;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.light-mode {
+            background: var(--light-bg);
+            color: var(--light-text);
+        }
+
+        body.mode2 {
+            background: var(--mode2-bg);
+            color: var(--mode2-text);
+            font-family: 'Fira Code', monospace;
+        }
+
+        body.mode2 * {
+            font-family: 'Fira Code', monospace !important;
+        }
+
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-circle {
+            width: 80px;
+            height: 80px;
+            border: 8px solid var(--secondary);
+            border-top: 8px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite, scaleIn 0.5s ease;
+        }
+
+        .loader-text {
+            position: absolute;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            animation: fadeIn 1s ease infinite alternate;
+        }
+
+        .mode2-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9998;
+            font-family: 'Fira Code', monospace;
+            background: var(--mode2-bg);
+            color: var(--mode2-text);
+        }
+
+        .mode2-loader.active {
+            display: flex;
+        }
+
+        .mode2-loader-text {
+            font-size: 1.5rem;
+            animation: typing 2s steps(40) infinite;
+        }
+
+        .terminal {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            width: 300px;
+            background: var(--mode2-bg);
+            border: 1px solid var(--mode2-text);
+            border-radius: 5px;
+            padding: 0.5rem;
+            display: none;
+            flex-direction: column;
+            z-index: 1001;
+            color: var(--mode2-text);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .terminal.active {
+            display: flex;
+        }
+
+        .terminal-input {
+            background: none;
+            border: none;
+            color: var(--mode2-text);
+            font-family: 'Fira Code', monospace;
+            width: 100%;
+            outline: none;
+        }
+
+        .terminal-output {
+            max-height: 150px;
+            overflow-y: auto;
+            margin-bottom: 0.5rem;
+        }
+
+        .terminal-output p {
+            margin: 0.2rem 0;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 20, 25, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            transform: translateY(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .navbar.visible {
+            transform: translateY(0);
+        }
+
+        body.mode2 .navbar {
+            background: var(--mode2-bg);
+            border-bottom: 1px solid var(--mode2-text);
+        }
+
+        .nav-content {
+            max-width: var(--container);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            font-weight: 700;
+            transition: transform 0.3s ease;
+        }
+
+        body.mode2 .nav-logo {
+            color: var(--mode2-text);
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.1);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        body.mode2 .nav-menu {
+            gap: 1rem;
+        }
+
+        .nav-menu a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        body.mode2 .nav-menu a {
+            color: var(--mode2-text);
+            text-transform: lowercase;
+        }
+
+        body.mode2 .nav-menu a::before {
+            content: '> ';
+            color: var(--mode2-accent);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover, .nav-menu a:focus {
+            color: var(--secondary);
+            outline: none;
+        }
+
+        body.mode2 .nav-menu a:hover, body.mode2 .nav-menu a:focus {
+            color: var(--mode2-accent);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        body.mode2 .nav-menu a::after {
+            background: var(--mode2-accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background: var(--secondary);
+            transition: all 0.3s ease;
+        }
+
+        body.mode2 .hamburger span {
+            background: var(--mode2-text);
+        }
+
+        .theme-toggle, .language-toggle, .performance-toggle {
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--secondary);
+            padding: 0.5rem;
+            transition: transform 0.3s ease;
+            background: none;
+            border: none;
+        }
+
+        body.mode2 .theme-toggle, body.mode2 .language-toggle, body.mode2 .performance-toggle {
+            color: var(--mode2-text);
+        }
+
+        .theme-toggle:hover, .language-toggle:hover, .performance-toggle:hover {
+            transform: scale(1.1);
+            outline: none;
+        }
+
+        body.mode2 .theme-toggle:hover, body.mode2 .language-toggle:hover, body.mode2 .performance-toggle:hover {
+            color: var(--mode2-accent);
+        }
+
+        .mode2-toggle {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            color: var(--secondary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            z-index: 1000;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .mode2-toggle:hover {
+            color: var(--accent);
+        }
+
+        .container {
+            max-width: var(--container);
+            margin: 0 auto;
+            padding: 4rem 1rem;
+            perspective: 1000px;
+        }
+
+        body.mode2 .container {
+            padding: 2rem 1rem;
+        }
+
+        .section {
+            margin-bottom: 6rem;
+            opacity: 0;
+            transform: translateY(50px) scale(0.95);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        body.mode2 .section {
+            margin-bottom: 2rem;
+            animation: typing 1s steps(30);
+        }
+
+        h2 {
+            color: var(--secondary);
+            font-size: 2.8rem;
+            margin-bottom: 2rem;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: slideInLeft 0.8s ease forwards;
+        }
+
+        body.mode2 h2 {
+            font-size: 1.5rem;
+            color: var(--mode2-text);
+            text-transform: none;
+            margin-bottom: 1rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        .section.visible h2::after {
+            width: 80px;
+        }
+
+        body.mode2 h2::after {
+            display: none;
+        }
+
+        .course-hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 20, 25, 0.9));
+            border-bottom: 1px solid var(--secondary);
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.8s ease forwards;
+        }
+
+        body.mode2 .course-hero {
+            background: var(--mode2-bg);
+            border-bottom: 1px solid var(--mode2-text);
+        }
+
+        .course-hero h1 {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        body.mode2 .course-hero h1 {
+            font-size: 2rem;
+            color: var(--mode2-text);
+        }
+
+        .course-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+        }
+
+        body.mode2 .course-hero p {
+            font-size: 1rem;
+        }
+
+        .course-hero .cta-button {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: var(--secondary);
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        body.mode2 .course-hero .cta-button {
+            background: var(--mode2-accent);
+            color: var(--mode2-bg);
+        }
+
+        .course-hero .cta-button:hover {
+            transform: scale(1.1);
+            background: var(--accent);
+        }
+
+        body.mode2 .course-hero .cta-button:hover {
+            background: var(--mode2-text);
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            padding: 0.5rem 1rem;
+            width: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--secondary);
+            border-radius: 20px;
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        body.mode2 .search-input {
+            background: none;
+            border: 1px solid var(--mode2-text);
+            color: var(--mode2-text);
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+        }
+
+        body.mode2 .search-input:focus {
+            border-color: var(--mode2-accent);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        body.mode2 .search-input::placeholder {
+            color: var(--mode2-text);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        body.mode2 .courses-grid {
+            display: block;
+        }
+
+        .course-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.5s ease, box-shadow 0.3s ease, background 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .section.visible .course-card {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: calc(0.1s * var(--card-index));
+        }
+
+        .course-card:hover {
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+        }
+
+        body.mode2 .course-card {
+            background: none;
+            border: none;
+            padding: 1rem 0;
+            transform: none;
+        }
+
+        body.mode2 .course-card:hover {
+            background: none;
+            transform: none;
+        }
+
+        .course-image {
+            width: 100%;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.3s ease;
+        }
+
+        body.mode2 .course-image {
+            display: none;
+        }
+
+        .course-card:hover .course-image {
+            transform: scale(1.05);
+        }
+
+        .course-tech {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        body.mode2 .course-tech {
+            display: inline;
+        }
+
+        .tech-tag {
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: transform 0.3s ease, background 0.3s ease;
+            animation: popIn 0.5s ease forwards;
+            animation-delay: calc(0.1s * var(--tag-index));
+            opacity: 0;
+        }
+
+        .section.visible .tech-tag {
+            opacity: 1;
+        }
+
+        body.mode2 .tech-tag {
+            background: none;
+            color: var(--mode2-accent);
+            padding: 0;
+            margin: 0 0.5rem;
+            display: inline;
+        }
+
+        .tech-tag:hover {
+            transform: scale(1.1);
+            background: var(--accent);
+        }
+
+        body.mode2 .tech-tag:hover {
+            transform: none;
+            color: var(--mode2-text);
+        }
+
+        .course-details {
+            max-height: 0;
+            overflow: hidden;
+            margin-top: 1rem;
+            padding: 0;
+            transition: max-height 0.5s ease, padding 0.5s ease;
+        }
+
+        .course-details.active {
+            max-height: 400px;
+            padding: 1rem;
+        }
+
+        body.mode2 .course-details {
+            padding: 0.5rem 0;
+        }
+
+        body.mode2 .course-details.active {
+            padding: 0.5rem 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--secondary);
+            width: 0;
+            transition: width 0.5s ease;
+        }
+
+        body.mode2 .progress-bar {
+            background: none;
+            border: 1px solid var(--mode2-text);
+        }
+
+        body.mode2 .progress-fill {
+            background: var(--mode2-accent);
+        }
+
+        .course-card.active .progress-fill {
+            width: 70%;
+        }
+
+        .course-details a {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1.5rem;
+            background: var(--secondary);
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 20px;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        body.mode2 .course-details a {
+            background: var(--mode2-accent);
+            color: var(--mode2-bg);
+        }
+
+        .course-details a:hover {
+            background: var(--accent);
+            transform: scale(1.05);
+        }
+
+        body.mode2 .course-details a:hover {
+            background: var(--mode2-text);
+        }
+
+        .tests-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        body.mode2 .tests-section {
+            background: none;
+            border: 1px solid var(--mode2-text);
+        }
+
+        .tests-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tests-list li {
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+        }
+
+        body.mode2 .tests-list li {
+            font-size: 1rem;
+            text-align: left;
+        }
+
+        .cursor-trail {
+            position: fixed;
+            color: var(--secondary);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 1s ease;
+            z-index: 999;
+        }
+
+        body.mode2 .cursor-trail {
+            color: var(--mode2-accent);
+        }
+
+        .cursor-trail.fade-out {
+            opacity: 0;
+        }
+
+        footer {
+            background: rgba(15, 20, 25, 0.95);
+            padding: 2rem 1rem;
+            color: var(--text);
+            text-align: center;
+            border-top: 1px solid var(--secondary);
+        }
+
+        body.mode2 footer {
+            background: var(--mode2-bg);
+            border-top: 1px solid var(--mode2-text);
+        }
+
+        .footer-content {
+            max-width: var(--container);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        body.mode2 .footer-links a {
+            color: var(--mode2-text);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+
+        body.mode2 .footer-links a:hover {
+            color: var(--mode2-accent);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .social-icons a {
+            color: var(--text);
+            font-size: 1.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        body.mode2 .social-icons a {
+            color: var(--mode2-text);
+        }
+
+        .social-icons a:hover {
+            color: var(--secondary);
+            transform: scale(1.1);
+        }
+
+        body.mode2 .social-icons a:hover {
+            color: var(--mode2-accent);
+        }
+
+        .footer-contact a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        body.mode2 .footer-contact a {
+            color: var(--mode2-text);
+        }
+
+        .footer-contact a:hover {
+            color: var(--secondary);
+        }
+
+        body.mode2 .footer-contact a:hover {
+            color: var(--mode2-accent);
+        }
+
+        .footer-copyright {
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes scaleIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        @keyframes fadeIn { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+        @keyframes typing { 0% { width: 0; } 50% { width: 100%; } 100% { width: 0; } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+
+        @media (max-width: 768px) {
+            h2 { font-size: 2rem; }
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: var(--primary);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            body.mode2 .nav-menu { background: var(--mode2-bg); }
+            .nav-menu.active { transform: translateX(0); }
+            .hamburger { display: flex; }
+            .terminal { width: 90%; right: 5%; }
+            .footer-content { grid-template-columns: 1fr; }
+            .course-hero h1 { font-size: 2.5rem; }
+            .search-bar { width: 90%; }
+            .search-input { width: 100%; }
+        }
+
+        @media (max-width: 480px) {
+            h2 { font-size: 2rem; }
+            .container { padding: 2rem 1rem; }
+            .course-hero h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <div class="loader-circle"></div>
+        <div class="loader-text">Code Loading...</div>
+    </div>
+
+    <div class="mode2-loader">
+        <div class="mode2-loader-text">sudo access granted...</div>
+        <div class="mode2-loader-text">Loading courses interface...</div>
+    </div>
+
+    <nav class="navbar" aria-label="Main navigation">
+        <div class="nav-content">
+            <div class="nav-logo">VS Code</div>
+            <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" role="menubar">
+                <li role="none"><a href="index.html#home" role="menuitem" data-lang-key="home">Početna</a></li>
+                <li role="none"><a href="index.html#about" role="menuitem" data-lang-key="about">O meni</a></li>
+                <li role="none"><a href="index.html#skills" role="menuitem" data-lang-key="skills">Veštine</a></li>
+                <li role="none"><a href="index.html#projects" role="menuitem" data-lang-key="projects">Projekti</a></li>
+                <li role="none"><a href="courses.html" role="menuitem" data-lang-key="courses">Kursevi</a></li>
+                <li role="none"><a href="index.html#contact" role="menuitem" data-lang-key="contact">Kontakt</a></li>
+                <li role="none">
+                    <button class="theme-toggle fas fa-sun" onclick="toggleTheme()" aria-label="Toggle theme"></button>
+                </li>
+                <li role="none">
+                    <button class="language-toggle" onclick="toggleLanguage()" aria-label="Toggle language">SR</button>
+                </li>
+                <li role="none">
+                    <button class="performance-toggle fas fa-bolt" onclick="togglePerformance()" aria-label="Toggle performance mode"></button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="mode2-toggle" onclick="toggleMode2()" aria-label="Toggle Mode 2">terminal</div>
+
+    <div class="terminal">
+        <div class="terminal-output"></div>
+        <input type="text" class="terminal-input" placeholder="> Type command..." aria-label="Terminal command input">
+    </div>
+
+    <main class="container">
+        <div class="course-hero">
+            <h1 data-lang-key="courses">Kursevi</h1>
+            <p data-lang-key="courses-intro">Otkrij moje kurseve programiranja i unapredi svoje veštine u C-u, C++-u i Pythonu!</p>
+            <a href="#courses" class="cta-button" data-lang-key="explore-courses">Istraži Kurseve</a>
+        </div>
+
+        <section class="section" id="courses">
+            <h2 data-lang-key="courses">Kursevi</h2>
+            <p class="typing intro-text" data-lang-key="courses-description">Pridruži se mojim interaktivnim kursevima koji kombinuju teoriju i praktične projekte. Svaki kurs je dizajniran da ti pomogne da savladaš ključne koncepte programiranja.</p>
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Search courses..." data-lang-key="search-placeholder">
+            </div>
+            <div class="courses-grid">
+                <div class="course-card card" style="--card-index: 1;" data-difficulty="beginner" onclick="toggleDetails(this)" tabindex="0">
+                    <div class="course-image" style="background-image: url('https://via.placeholder.com/300x150?text=C+Programming');"></div>
+                    <h3>Mastering C Programming</h3>
+                    <div class="course-tech">
+                        <span class="tech-tag" style="--tag-index: 1;">C</span>
+                        <span class="tech-tag" style="--tag-index: 2;">Beginner</span>
+                        <span class="tech-tag" style="--tag-index: 3;">Core Concepts</span>
+                    </div>
+                    <p class="typing" data-lang-key="course1">Nauči osnove programiranja u C-u kroz praktične primere.</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="course-details">
+                        <p class="typing" data-lang-key="course1-details">Kurs pokriva osnove C-a: promenljive, petlje, funkcije i pokazivače. Namenjen početnicima.</p>
+                        <a href="https://courses.vasilijestankovic.com/c-programming" target="_blank">Započni Kurs</a>
+                    </div>
+                </div>
+                <div class="course-card card" style="--card-index: 2;" data-difficulty="advanced" onclick="toggleDetails(this)" tabindex="0">
+                    <div class="course-image" style="background-image: url('https://via.placeholder.com/300x150?text=C++');"></div>
+                    <h3>Advanced C++ Techniques</h3>
+                    <div class="course-tech">
+                        <span class="tech-tag" style="--tag-index: 1;">C++</span>
+                        <span class="tech-tag" style="--tag-index: 2;">Advanced</span>
+                        <span class="tech-tag" style="--tag-index: 3;">Algorithms</span>
+                    </div>
+                    <p class="typing" data-lang-key="course2">Nauči napredne C++ tehnike: STL, šabloni i optimizacija.</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="course-details">
+                        <p class="typing" data-lang-key="course2-details">Kurs o C++-u sa fokusom na performanse i moderne tehnike.</p>
+                        <a href="https://courses.vasilijestankovic.com/cpp-advanced" target="_blank">Započni Kurs</a>
+                    </div>
+                </div>
+                <div class="course-card card" style="--card-index: 3;" data-difficulty="advanced" onclick="toggleDetails(this)" tabindex="0">
+                    <div class="course-image" style="background-image: url('https://via.placeholder.com/300x150?text=Python+AI');"></div>
+                    <h3>Python for AI</h3>
+                    <div class="course-tech">
+                        <span class="tech-tag" style="--tag-index: 1;">Python</span>
+                        <span class="tech-tag" style="--tag-index: 2;">AI</span>
+                        <span class="tech-tag" style="--tag-index: 3;">TensorFlow</span>
+                    </div>
+                    <p class="typing" data-lang-key="course3">Nauči Python za razvoj AI modela i obradu podataka.</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="course-details">
+                        <p class="typing" data-lang-key="course3-details">Kurs uključuje osnove Pythona, rad sa bibliotekama i pravljenje AI projekata.</p>
+                        <a href="https://courses.vasilijestankovic.com/python-ai" target="_blank">Započni Kurs</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section tests-section" id="tests">
+            <h2 data-lang-key="tests">Tests</h2>
+            <ul class="tests-list">
+                <li data-lang-key="test1">Test 1</li>
+                <li data-lang-key="test2">Test 2</li>
+                <li data-lang-key="test3">Test 3</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html#about" data-lang-key="about">O meni</a>
+                <a href="index.html#skills" data-lang-key="skills">Veštine</a>
+                <a href="index.html#projects" data-lang-key="projects">Projekti</a>
+                <a href="courses.html" data-lang-key="courses">Kursevi</a>
+                <a href="index.html#contact" data-lang-key="contact">Kontakt</a>
+            </div>
+            <div class="social-icons">
+                <a href="https://github.com/Vaske10024" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com/in/vasilije-stankovic" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com/vasilijestank" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+            <div class="footer-contact">
+                <a href="mailto:vasa.stankovic@gmail.com">vasa.stankovic@gmail.com</a>
+            </div>
+            <div class="footer-copyright">
+                © 2025 Vasilije Stanković. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" onclick="scrollToTop()" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        const translations = {
+            en: {
+                home: "Home",
+                about: "About",
+                skills: "Skills",
+                projects: "Projects",
+                courses: "Courses",
+                contact: "Contact",
+                "courses-intro": "Discover my programming courses and level up your skills in C, C++, and Python!",
+                "courses-description": "Join my interactive courses that blend theory with hands-on projects. Each course is designed to help you master key programming concepts.",
+                "explore-courses": "Explore Courses",
+                "search-placeholder": "Search courses...",
+                tests: "Tests",
+                test1: "Test 1",
+                test2: "Test 2",
+                test3: "Test 3",
+                course1: "Learn C programming basics through practical examples.",
+                "course1-details": "Covers C basics: variables, loops, functions, and pointers. Designed for beginners.",
+                course2: "Learn advanced C++ techniques: STL, templates, and optimization.",
+                "course2-details": "Course on C++ focusing on performance and modern techniques.",
+                course3: "Learn Python for AI model development and data processing.",
+                "course3-details": "Covers Python basics, working with libraries, and building AI projects."
+            },
+            sr: {
+                home: "Početna",
+                about: "O meni",
+                skills: "Veštine",
+                projects: "Projekti",
+                courses: "Kursevi",
+                contact: "Kontakt",
+                "courses-intro": "Otkrij moje kurseve programiranja i unapredi svoje veštine u C-u, C++-u i Pythonu!",
+                "courses-description": "Pridruži se mojim interaktivnim kursevima koji kombinuju teoriju i praktične projekte. Svaki kurs je dizajniran da ti pomogne da savladaš ključne koncepte programiranja.",
+                "explore-courses": "Istraži Kurseve",
+                "search-placeholder": "Pretraži kurseve...",
+                tests: "Testovi",
+                test1: "Test 1",
+                test2: "Test 2",
+                test3: "Test 3",
+                course1: "Nauči osnove programiranja u C-u kroz praktične primere.",
+                "course1-details": "Kurs pokriva osnove C-a: promenljive, petlje, funkcije i pokazivače. Namenjen početnicima.",
+                course2: "Nauči napredne C++ tehnike: STL, šabloni i optimizacija.",
+                "course2-details": "Kurs o C++-u sa fokusom na performanse i moderne tehnike.",
+                course3: "Nauči Python za razvoj AI modela i obradu podataka.",
+                "course3-details": "Kurs uključuje osnove Pythona, rad sa bibliotekama i pravljenje AI projekata."
+            }
+        };
+
+        let currentLang = 'sr';
+        let isPerformanceOptimized = false;
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'sr' ? 'en' : 'sr';
+            document.querySelector('.language-toggle').textContent = currentLang.toUpperCase();
+            document.querySelectorAll('[data-lang-key]').forEach(element => {
+                const key = element.getAttribute('data-lang-key');
+                element.textContent = translations[currentLang][key];
+            });
+            searchCourses(document.querySelector('.search-input').value);
+        }
+
+        window.addEventListener('load', () => {
+            const loader = document.querySelector('.loader');
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                document.querySelector('.navbar').classList.add('visible');
+            }, 800);
+        });
+
+        function toggleMode2() {
+            const body = document.body;
+            const mode2Loader = document.querySelector('.mode2-loader');
+            const terminal = document.querySelector('.terminal');
+            if (!body.classList.contains('mode2')) {
+                mode2Loader.classList.add('active');
+                setTimeout(() => {
+                    body.classList.add('mode2');
+                    mode2Loader.classList.remove('active');
+                    terminal.classList.add('active');
+                }, 1500);
+            } else {
+                body.classList.remove('mode2');
+                terminal.classList.remove('active');
+            }
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.querySelector('.theme-toggle');
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                themeToggle.classList.remove('fa-moon');
+                themeToggle.classList.add('fa-sun');
+            } else {
+                body.classList.add('light-mode');
+                body.classList.remove('mode2');
+                themeToggle.classList.remove('fa-sun');
+                themeToggle.classList.add('fa-moon');
+                document.querySelector('.terminal').classList.remove('active');
+            }
+        }
+
+        function togglePerformance() {
+            isPerformanceOptimized = !isPerformanceOptimized;
+            const performanceToggle = document.querySelector('.performance-toggle');
+            performanceToggle.classList.toggle('fa-bolt', !isPerformanceOptimized);
+            performanceToggle.classList.toggle('fa-play', isPerformanceOptimized);
+            document.querySelectorAll('.cursor-trail').forEach(trail => trail.remove());
+        }
+
+        const terminal = document.querySelector('.terminal');
+        const terminalInput = document.querySelector('.terminal-input');
+        const terminalOutput = document.querySelector('.terminal-output');
+
+        const commands = {
+            '/help': 'Available commands: /help, /reset, /theme, /lang, /perf',
+            '/reset': 'Exit all modes',
+            '/theme': 'Toggle light/dark mode',
+            '/lang': 'Toggle language (SR/EN)',
+            '/perf': 'Toggle performance optimization (cursor trails)'
+        };
+
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const command = terminalInput.value.trim().toLowerCase();
+                terminalOutput.innerHTML += `<p>> ${command}</p>`;
+                if (commands[command]) {
+                    terminalOutput.innerHTML += `<p>${commands[command]}</p>`;
+                    if (command === '/reset') {
+                        document.body.classList.remove('mode2', 'light-mode');
+                        terminal.classList.remove('active');
+                        if (isPerformanceOptimized) togglePerformance();
+                    } else if (command === '/theme') toggleTheme();
+                    else if (command === '/lang') toggleLanguage();
+                    else if (command === '/perf') togglePerformance();
+                } else {
+                    terminalOutput.innerHTML += `<p>Unknown command. Type /help for available commands.</p>`;
+                }
+                terminalInput.value = '';
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            } else if (e.key === 'Tab') {
+                e.preventDefault();
+                const input = terminalInput.value.trim().toLowerCase();
+                for (const cmd in commands) {
+                    if (cmd.startsWith(input)) {
+                        terminalInput.value = cmd;
+                        break;
+                    }
+                }
+            }
+        });
+
+        const sections = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => observer.observe(section));
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('scroll', () => {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.scrollY > 300) backToTop.classList.add('visible');
+            else backToTop.classList.remove('visible');
+        });
+
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', hamburger.classList.contains('active'));
+        });
+
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', false);
+            });
+        });
+
+        function toggleDetails(card) {
+            const details = card.querySelector('.course-details');
+            const isActive = details.classList.contains('active');
+            document.querySelectorAll('.course-details').forEach(detail => {
+                detail.classList.remove('active');
+                detail.closest('.card').classList.remove('active');
+            });
+            if (!isActive) {
+                details.classList.add('active');
+                card.classList.add('active');
+            }
+        }
+
+        function searchCourses(query) {
+            const cards = document.querySelectorAll('.course-card');
+            query = query.toLowerCase();
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const tags = Array.from(card.querySelectorAll('.tech-tag')).map(tag => tag.textContent.toLowerCase());
+                const matches = title.includes(query) || tags.some(tag => tag.includes(query));
+                card.style.display = matches ? 'block' : 'none';
+            });
+        }
+
+        document.querySelector('.search-input').addEventListener('input', (e) => {
+            searchCourses(e.target.value);
+        });
+
+        const codeElements = ['<div>', '{}', 'const', '() => {}', 'int', 'char', 'function', 'return', 'if', 'else'];
+        let lastTrailTime = 0;
+        const trailInterval = 50;
+
+        document.addEventListener('mousemove', (e) => {
+            if (isPerformanceOptimized) return;
+            const currentTime = Date.now();
+            if (currentTime - lastTrailTime < trailInterval) return;
+            lastTrailTime = currentTime;
+
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.textContent = codeElements[Math.floor(Math.random() * codeElements.length)];
+            trail.style.left = `${e.clientX}px`;
+            trail.style.top = `${e.clientY}px`;
+
+            const rotation = Math.random() * 30 - 15;
+            const scale = 0.8 + Math.random() * 0.4;
+            trail.style.transform = `rotate(${rotation}deg) scale(${scale})`;
+
+            document.body.appendChild(trail);
+
+            setTimeout(() => {
+                trail.classList.add('fade-out');
+                setTimeout(() => trail.remove(), 1000);
+            }, 0);
+        });
+    </script>
+</body>
+</html>
