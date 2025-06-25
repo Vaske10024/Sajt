@@ -337,16 +337,16 @@
         }
 
         .hero-content {
-            max-width: var(--container);
-            text-align: center;
-            padding: 0 2rem;
-            position: relative;
-            z-index: 1;
-        }
+    max-width: var(--container);
+    text-align: center; /* Fixed typo */
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+}
 
-        body.mode2 .hero-content {
-            text-align: left;
-        }
+body.mode2 .hero-content {
+    text-align: center; /* Ensure center alignment in mode2 */
+}
 
         .hero .name {
             font-size: 4.5rem;
@@ -358,7 +358,7 @@
         body.mode2 .hero .name {
             font-size: 2.5rem;
             color: var(--mode2-text);
-            animation: typing 2s steps(30);
+            animation: fall 1s ease forwards;
         }
 
         .hero p {
@@ -562,6 +562,12 @@
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            transition: transform 0.5s ease, max-height 0.5s ease;
+        }
+
+        .project-card.active {
+            transform: scale(1.05);
+            max-height: 600px;
         }
 
         body.mode2 .project-card, body.mode2 .course-card {
@@ -624,16 +630,26 @@
         }
 
         .course-details, .project-details {
-            display: none;
+            max-height: 0;
+            overflow: hidden;
             margin-top: 1.5rem;
-            padding: 1.5rem;
+            padding: 0 1.5rem;
             background: rgba(0,0,0,0.3);
             border-radius: 10px;
-            animation: slideIn 0.5s ease;
+            transition: max-height 0.5s ease, padding 0.5s ease;
+        }
+
+        .course-details.active, .project-details.active {
+            max-height: 300px;
+            padding: 1.5rem;
         }
 
         body.mode2 .course-details, body.mode2 .project-details {
             background: none;
+            padding: 0.5rem 0;
+        }
+
+        body.mode2 .course-details.active, body.mode2 .project-details.active {
             padding: 0.5rem 0;
         }
 
@@ -704,6 +720,7 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
+            вор: center;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -982,6 +999,7 @@
             .hamburger { display: flex; }
             .terminal { width: 90%; right: 5%; }
             .footer-links, .social-icons { flex-direction: column; gap: 0.5rem; }
+            .project-card.active { max-height: 800px; }
         }
 
         @media (max-width: 480px) {
@@ -1017,7 +1035,7 @@
                 <li role="none"><a href="#about" role="menuitem" data-lang-key="about">O meni</a></li>
                 <li role="none"><a href="#skills" role="menuitem" data-lang-key="skills">Veštine</a></li>
                 <li role="none"><a href="#projects" role="menuitem" data-lang-key="projects">Projekti</a></li>
-                <li role="none"><a href="#courses" role="menuitem" data-lang-key="courses">Kursevi</a></li>
+                <li role="none"><a href="courses.html" role="menuitem" data-lang-key="courses">Kursevi</a></li>
                 <li role="none"><a href="#contact" role="menuitem" data-lang-key="contact">Kontakt</a></li>
                 <li role="none">
                     <button class="theme-toggle fas fa-sun" onclick="toggleTheme()" aria-label="Toggle theme"></button>
@@ -1115,6 +1133,7 @@
                 </div>
                 <p class="project-text typing">Aplikacija za planiranje prostora sa interaktivnim GUI-jem. Koristi MVC i standardne dizajn obrasce. <a href="https://github.com/Vaske10024/smart-room-planner" target="_blank">GitHub</a> | <a href="https://demo.smartroomplanner.com" target="_blank">Demo</a></p>
                 <div class="project-details">
+                    <!-- OVDE SU DETALJI O TOM PROJEKTU -->
                     <p class="typing">More details coming soon...</p>
                 </div>
             </div>
@@ -1127,6 +1146,7 @@
                 </div>
                 <p class="project-text typing">Model za predviđanje karata sa 79% tačnosti. Uključuje obradu podataka i neuronske mreže. <a href="https://github.com/Vaske10024/ai-card-predictor" target="_blank">GitHub</a> | <a href="https://demo.aicardpredictor.com" target="_blank">Demo</a></p>
                 <div class="project-details">
+                    <!-- OVDE SU DETALJI O TOM PROJEKTU -->
                     <p class="typing">More details coming soon...</p>
                 </div>
             </div>
@@ -1139,6 +1159,7 @@
                 </div>
                 <p class="project-text typing">Real-time detekcija znakovnog jezika sa praćenjem pokreta ruku. <a href="https://github.com/Vaske10024/sign-language-detector" target="_blank">GitHub</a> | <a href="https://demo.signlanguagedetector.com" target="_blank">Demo</a></p>
                 <div class="project-details">
+                    <!-- OVDE SU DETALJI O TOM PROJEKTU -->
                     <p class="typing">More details coming soon...</p>
                 </div>
             </div>
@@ -1151,57 +1172,11 @@
                 </div>
                 <p class="project-text typing">JavaFX aplikacija za zakazivanje seansi, praćenje plaćanja, evidenciju prethodnih i budućih seansi, sa statistikom za svakog terapeuta. Povezana sa SQL Workbench bazom podataka. <a href="https://github.com/Vaske10024/psychotherapist-app" target="_blank">GitHub</a> | <a href="https://demo.psychotherapistapp.com" target="_blank">Demo</a></p>
                 <div class="project-details">
+                    <!-- OVDE SU DETALJI O TOM PROJEKTU -->
                     <p class="typing">More details coming soon...</p>
                 </div>
             </div>
         </section>
-
-        <section class="section" id="courses">
-            <h2 data-lang-key="courses">Kursevi</h2>
-            <div class="course-card card" style="--card-index: 1;" onclick="toggleDetails(this)" tabindex="0">
-                <h3>Mastering C Programming</h3>
-                <div class="course-tech">
-                    <span class="tech-tag" style="--tag-index: 1;">C</span>
-                    <span class="tech-tag" style="--tag-index: 2;">Beginner</span>
-                    <span class="tech-tag" style="--tag-index: 3;">Core Concepts</span>
-                </div>
-                <p class="typing" data-lang-key="course1">Nauči osnove programiranja u C-u kroz praktične primere.</p>
-                <div class="course-details">
-                    <div class="course-preview">Video Pregled Kursа</div>
-                    <p class="typing" data-lang-key="course1-details">Kurs pokriva osnove C-a: promenljive, petlje, funkcije i pokazivače. Namenjen početnicima.</p>
-                    <a href="https://courses.vasilijestankovic.com/c-programming" target="_blank">Započni Kurs</a>
-                </div>
-            </div>
-            <div class="course-card card" style="--card-index: 2;" onclick="toggleDetails(this)" tabindex="0">
-                <h3>Advanced C++ Techniques</h3>
-                <div class="course-tech">
-                    <span class="tech-tag" style="--tag-index: 1;">C++</span>
-                    <span class="tech-tag" style="--tag-index: 2;">Advanced</span>
-                    <span class="tech-tag" style="--tag-index: 3;">Algorithms</span>
-                </div>
-                <p class="typing" data-lang-key="course2">Nauči napredne C++ tehnike: STL, šabloni i optimizacija.</p>
-                <div class="course-details">
-                    <div class="course-preview">Interaktivni Primer</div>
-                    <p class="typing" data-lang-key="course2-details">Kurs o C++-u sa fokusom na performanse i moderne tehnike.</p>
-                    <a href="https://courses.vasilijestankovic.com/cpp-advanced" target="_blank">Započni Kurs</a>
-                </div>
-            </div>
-            <div class="course-card card" style="--card-index: 3;" onclick="toggleDetails(this)" tabindex="0">
-                <h3>Python for AI</h3>
-                <div class="course-tech">
-                    <span class="tech-tag" style="--tag-index: 1;">Python</span>
-                    <span class="tech-tag" style="--tag-index: 2;">AI</span>
-                    <span class="tech-tag" style="--tag-index: 3;">TensorFlow</span>
-                </div>
-                <p class="typing" data-lang-key="course3">Nauči Python za razvoj AI modela i obradu podataka.</p>
-                <div class="course-details">
-                    <div class="course-preview">AI Demo</div>
-                    <p class="typing" data-lang-key="course3-details">Kurs uključuje osnove Pythona, rad sa bibliotekama i pravljenje AI projekata.</p>
-                    <a href="https://courses.vasilijestankovic.com/python-ai" target="_blank">Započni Kurs</a>
-                </div>
-            </div>
-        </section>
-
         <section class="section" id="contact">
             <h2 data-lang-key="contact">Kontakt</h2>
             <div class="card" style="--card-index: 1;" tabindex="0">
@@ -1240,7 +1215,7 @@
                 <a href="#about" data-lang-key="about">O meni</a>
                 <a href="#skills" data-lang-key="skills">Veštine</a>
                 <a href="#projects" data-lang-key="projects">Projekti</a>
-                <a href="#courses" data-lang-key="courses">Kursevi</a>
+                <a href="courses.html" data-lang-key="courses">Kursevi</a>
                 <a href="#contact" data-lang-key="contact">Kontakt</a>
             </div>
             <div class="social-icons">
@@ -1368,32 +1343,28 @@
         }
 
         function togglePerformance() {
-    isPerformanceOptimized = !isPerformanceOptimized;
-    const performanceToggle = document.querySelector('.performance-toggle');
-    performanceToggle.classList.toggle('fa-bolt', !isPerformanceOptimized);
-    performanceToggle.classList.toggle('fa-play', isPerformanceOptimized);
+            isPerformanceOptimized = !isPerformanceOptimized;
+            const performanceToggle = document.querySelector('.performance-toggle');
+            performanceToggle.classList.toggle('fa-bolt', !isPerformanceOptimized);
+            performanceToggle.classList.toggle('fa-play', isPerformanceOptimized);
 
-    if (isPerformanceOptimized) {
-        // Stop hero canvas animation
-        if (animationFrameId) {
-            cancelAnimationFrame(animationFrameId);
-            animationFrameId = null;
+            if (isPerformanceOptimized) {
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
+                const canvas = document.getElementById('hero-canvas');
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                document.querySelectorAll('.cursor-trail').forEach(trail => trail.remove());
+            } else {
+                particles.length = 0;
+                initParticles();
+                if (!animationFrameId) {
+                    animateParticles();
+                }
+            }
         }
-        // Clear canvas
-        const canvas = document.getElementById('hero-canvas');
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // Remove existing cursor trails
-        document.querySelectorAll('.cursor-trail').forEach(trail => trail.remove());
-    } else {
-        // Restart hero canvas animation
-        particles.length = 0; // Clear existing particles
-        initParticles();
-        if (!animationFrameId) {
-            animateParticles(); // Only start animation if not already running
-        }
-    }
-}
 
         const terminal = document.querySelector('.terminal');
         const terminalInput = document.querySelector('.terminal-input');
@@ -1513,8 +1484,14 @@
         function toggleDetails(card) {
             const details = card.querySelector('.course-details, .project-details');
             const isActive = details.classList.contains('active');
-            document.querySelectorAll('.course-details, .project-details').forEach(detail => detail.classList.remove('active'));
-            if (!isActive) details.classList.add('active');
+            document.querySelectorAll('.course-details, .project-details').forEach(detail => {
+                detail.classList.remove('active');
+                detail.closest('.card').classList.remove('active');
+            });
+            if (!isActive) {
+                details.classList.add('active');
+                card.classList.add('active');
+            }
         }
 
         const canvas = document.getElementById('hero-canvas');
