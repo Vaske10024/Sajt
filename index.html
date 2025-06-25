@@ -275,7 +275,7 @@
             background: var(--mode2-text);
         }
 
-        .theme-toggle, .language-toggle {
+        .theme-toggle, .language-toggle, .performance-toggle {
             cursor: pointer;
             font-size: 1.2rem;
             color: var(--secondary);
@@ -285,16 +285,16 @@
             border: none;
         }
 
-        body.mode2 .theme-toggle, body.mode2 .language-toggle {
+        body.mode2 .theme-toggle, body.mode2 .language-toggle, body.mode2 .performance-toggle {
             color: var(--mode2-text);
         }
 
-        .theme-toggle:hover, .language-toggle:hover {
+        .theme-toggle:hover, .language-toggle:hover, .performance-toggle:hover {
             transform: scale(1.1);
             outline: none;
         }
 
-        body.mode2 .theme-toggle:hover, body.mode2 .language-toggle:hover {
+        body.mode2 .theme-toggle:hover, body.mode2 .language-toggle:hover, body.mode2 .performance-toggle:hover {
             color: var(--mode2-accent);
         }
 
@@ -831,26 +831,6 @@
         }
 
         .footer-contact a {
-            color: none;
-            text-decoration: none;
-            transition: none;
-        }
-
-        body.mode2 .contact a {
-            color: none;
-        }
-
-        .contact a:hover {
-            color: none;
-            transform: none;
-        }
-
-        body.mode2 .contact-mode a:hover {
-            color: none;
-            transform: none;
-        }
-
-        .footer-contact a {
             color: var(--text);
             text-decoration: none;
             transition: color 0.3s ease, transform 0.3s ease;
@@ -861,12 +841,12 @@
         }
 
         .footer-contact a:hover {
-            color: var(--text);
-            transform: var(--scale(1.1));
+            color: var(--secondary);
+            transform: scale(1.1);
         }
 
         body.mode2 .footer-contact a:hover {
-            color: var(--mode2-text);
+            color: var(--mode2-accent);
             transform: none;
         }
 
@@ -1044,6 +1024,9 @@
                 </li>
                 <li role="none">
                     <button class="language-toggle" onclick="toggleLanguage()" aria-label="Toggle language">SR</button>
+                </li>
+                <li role="none">
+                    <button class="performance-toggle fas fa-bolt" onclick="togglePerformance()" aria-label="Toggle performance mode"></button>
                 </li>
             </ul>
         </div>
@@ -1331,6 +1314,8 @@
         };
 
         let currentLang = 'sr';
+        let isPerformanceOptimized = false;
+        let animationFrameId = null;
 
         function toggleLanguage() {
             currentLang = currentLang === 'sr' ? 'en' : 'sr';
@@ -1382,16 +1367,45 @@
             }
         }
 
+        function togglePerformance() {
+    isPerformanceOptimized = !isPerformanceOptimized;
+    const performanceToggle = document.querySelector('.performance-toggle');
+    performanceToggle.classList.toggle('fa-bolt', !isPerformanceOptimized);
+    performanceToggle.classList.toggle('fa-play', isPerformanceOptimized);
+
+    if (isPerformanceOptimized) {
+        // Stop hero canvas animation
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
+        // Clear canvas
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Remove existing cursor trails
+        document.querySelectorAll('.cursor-trail').forEach(trail => trail.remove());
+    } else {
+        // Restart hero canvas animation
+        particles.length = 0; // Clear existing particles
+        initParticles();
+        if (!animationFrameId) {
+            animateParticles(); // Only start animation if not already running
+        }
+    }
+}
+
         const terminal = document.querySelector('.terminal');
         const terminalInput = document.querySelector('.terminal-input');
         const terminalOutput = document.querySelector('.terminal-output');
 
         const commands = {
-            '/help': 'Available commands: /help, /hack, /reset, /theme, /lang',
+            '/help': 'Available commands: /help, /hack, /reset, /theme, /lang, /perf',
             '/hack': 'Trigger Matrix code rain',
             '/reset': 'Exit all modes',
             '/theme': 'Toggle light/dark mode',
-            '/lang': 'Toggle language (SR/EN)'
+            '/lang': 'Toggle language (SR/EN)',
+            '/perf': 'Toggle performance optimization (cursor trails and hero animations)'
         };
 
         terminalInput.addEventListener('keydown', (e) => {
@@ -1404,9 +1418,11 @@
                     else if (command === '/reset') {
                         document.body.classList.remove('mode2', 'light-mode');
                         terminal.classList.remove('active');
+                        if (isPerformanceOptimized) togglePerformance();
                     }
                     else if (command === '/theme') toggleTheme();
                     else if (command === '/lang') toggleLanguage();
+                    else if (command === '/perf') togglePerformance();
                 } else {
                     terminalOutput.innerHTML += `<p>Unknown command. Type /help for available commands.</p>`;
                 }
@@ -1425,6 +1441,7 @@
         });
 
         function triggerMatrixRain() {
+            if (isPerformanceOptimized) return;
             const canvas = document.getElementById('hero-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
@@ -1453,7 +1470,7 @@
             setTimeout(() => {
                 clearInterval(interval);
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                animateParticles();
+                if (!isPerformanceOptimized) animateParticles();
             }, 10000);
         }
 
@@ -1534,10 +1551,12 @@
         }
 
         function initParticles() {
+            if (isPerformanceOptimized) return;
             for (let i = 0; i < particleCount; i++) particles.push(new Particle());
         }
 
         function animateParticles() {
+            if (isPerformanceOptimized) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < particles.length; i++) {
                 particles[i].update();
@@ -1561,7 +1580,7 @@
                     particles.push(new Particle());
                 }
             }
-            requestAnimationFrame(animateParticles);
+            animationFrameId = requestAnimationFrame(animateParticles);
         }
 
         initParticles();
@@ -1583,6 +1602,7 @@
         const trailInterval = 50;
 
         document.addEventListener('mousemove', (e) => {
+            if (isPerformanceOptimized) return;
             const currentTime = Date.now();
             if (currentTime - lastTrailTime < trailInterval) return;
             lastTrailTime = currentTime;
