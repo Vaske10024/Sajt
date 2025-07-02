@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aplikacija za Psihoterapeute Project by Vasilije Stanković">
+    <meta name="keywords" content="psychotherapist app, Java, JavaFX, SQL, database">
+    <title>Aplikacija za Psihoterapeute - Vasilije Stanković</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f1419;
+            --secondary: #00ff88;
+            --accent: #00cc70;
+            --text: #f5f5f5;
+            --container: min(90%, 1200px);
+            --shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+            --light-bg: #f0f0f0;
+            --light-text: #333;
+            --mode2-bg: #000;
+            --mode2-text: #00ff00;
+            --mode2-accent: #ffa500;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.light-mode {
+            background: var(--light-bg);
+            color: var(--light-text);
+        }
+
+        body.mode2 {
+            background: var(--mode2-bg);
+            color: var(--mode2-text);
+            font-family: 'Fira Code', monospace;
+        }
+
+        body.mode2 * {
+            font-family: 'Fira Code', monospace !important;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 20, 25, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        body.mode2 .navbar {
+            background: var(--mode2-bg);
+            border-bottom: 1px solid var(--mode2-text);
+        }
+
+        .nav-content {
+            max-width: var(--container);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            font-weight: 700;
+            transition: transform 0.3s ease;
+        }
+
+        body.mode2 .nav-logo {
+            color: var(--mode2-text);
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.1);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        body.mode2 .nav-menu {
+            gap: 1rem;
+        }
+
+        .nav-menu a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        body.mode2 .nav-menu a {
+            color: var(--mode2-text);
+            text-transform: lowercase;
+        }
+
+        body.mode2 .nav-menu a::before {
+            content: '> ';
+            color: var(--mode2-accent);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover, .nav-menu a:focus {
+            color: var(--secondary);
+            outline: none;
+        }
+
+        body.mode2 .nav-menu a:hover, body.mode2 .nav-menu a:focus {
+            color: var(--mode2-accent);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        body.mode2 .nav-menu a::after {
+            background: var(--mode2-accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background: var(--secondary);
+            transition: all 0.3s ease;
+        }
+
+        body.mode2 .hamburger span {
+            background: var(--mode2-text);
+        }
+
+        .theme-toggle, .language-toggle {
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--secondary);
+            padding: 0.5rem;
+            transition: transform 0.3s ease;
+            background: none;
+            border: none;
+        }
+
+        body.mode2 .theme-toggle, body.mode2 .language-toggle {
+            color: var(--mode2-text);
+        }
+
+        .theme-toggle:hover, .language-toggle:hover {
+            transform: scale(1.1);
+            outline: none;
+        }
+
+        body.mode2 .theme-toggle:hover, body.mode2 .language-toggle:hover {
+            color: var(--mode2-accent);
+        }
+
+        .container {
+            max-width: var(--container);
+            margin: 0 auto;
+            padding: 4rem 1rem;
+        }
+
+        body.mode2 .container {
+            padding: 2rem 1rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        h1 {
+            color: var(--secondary);
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        body.mode2 h1 {
+            font-size: 1.5rem;
+            color: var(--mode2-text);
+            text-align: left;
+        }
+
+        .project-tech {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+            justify-content: center;
+        }
+
+        body.mode2 .project-tech {
+            display: inline;
+        }
+
+        .tech-tag {
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        body.mode2 .tech-tag {
+            background: none;
+            color: var(--mode2-accent);
+            padding: 0;
+            margin: 0 0.5rem;
+            display: inline;
+        }
+
+        .tech-tag:hover {
+            transform: scale(1.15) rotate(5deg);
+            background: var(--accent);
+        }
+
+        body.mode2 .tech-tag:hover {
+            transform: none;
+            color: var(--mode2-text);
+        }
+
+        .project-description {
+            margin: 1.5rem 0;
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+
+        body.mode2 .project-description {
+            font-size: 0.9rem;
+        }
+
+        .project-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid var(--secondary);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .project-image:hover {
+            transform: scale(1.05);
+        }
+
+        body.mode2 .project-image {
+            border: 1px solid var(--mode2-text);
+        }
+
+        body.mode2 .project-image:hover {
+            transform: none;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .project-link {
+            padding: 0.5rem 1rem;
+            background: var(--secondary);
+            color: var(--primary);
+            border-radius: 5px;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body.mode2 .project-link {
+            background: none;
+            color: var(--mode2-text);
+            border: 1px solid var(--mode2-text);
+        }
+
+        .project-link:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,255,136,0.3);
+        }
+
+        body.mode2 .project-link:hover {
+            transform: none;
+            color: var(--mode2-accent);
+            border-color: var(--mode2-accent);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 50%;
+            width: 100%;
+            transform: scale(0.7);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-image {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid var(--secondary);
+        }
+
+        body.mode2 .modal-image {
+            border: 1px solid var(--mode2-text);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            background: var(--secondary);
+            color: var(--primary);
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .modal-close:hover {
+            transform: scale(1.2);
+            background: var(--accent);
+        }
+
+        body.mode2 .modal-close {
+            background: none;
+            border: 1px solid var(--mode2-text);
+            color: var(--mode2-text);
+        }
+
+        body.mode2 .modal-close:hover {
+            color: var(--mode2-accent);
+            border-color: var(--mode2-accent);
+        }
+
+        footer {
+            background: var(--primary);
+            color: var(--text);
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--secondary);
+        }
+
+        body.mode2 footer {
+            background: var(--mode2-bg);
+            border-top: 1px solid var(--mode2-text);
+            text-align: left;
+        }
+
+        .footer-content {
+            max-width: var(--container);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        body.mode2 .footer-content {
+            align-items: flex-start;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        body.mode2 .footer-links {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        body.mode2 .footer-links a {
+            color: var(--mode2-text);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+            transform: scale(1.1);
+        }
+
+        body.mode2 .footer-links a:hover {
+            color: var(--mode2-accent);
+            transform: none;
+        }
+
+        .footer-copyright {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        body.mode2 .footer-copyright {
+            font-size: 0.8rem;
+            color: var(--mode2-text);
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: var(--primary);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            body.mode2 .nav-menu {
+                background: var(--mode2-bg);
+            }
+            .nav-menu.active {
+                transform: translateX(0);
+            }
+            .hamburger {
+                display: flex;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .project-image {
+                height: 150px;
+            }
+            .modal-content {
+                max-width: 80%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .project-description {
+                font-size: 1rem;
+            }
+            .modal-content {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" aria-label="Main navigation">
+        <div class="nav-content">
+            <div class="nav-logo">VS Code</div>
+            <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" role="menubar">
+                <li role="none"><a href="index.html#home" role="menuitem" data-lang-key="home">Početna</a></li>
+                <li role="none"><a href="index.html#about" role="menuitem" data-lang-key="about">O meni</a></li>
+                <li role="none"><a href="index.html#skills" role="menuitem" data-lang-key="skills">Veštine</a></li>
+                <li role="none"><a href="index.html#projects" role="menuitem" data-lang-key="projects">Projekti</a></li>
+                <li role="none"><a href="courses.html" role="menuitem" data-lang-key="courses">Kursevi</a></li>
+                <li role="none"><a href="index.html#contact" role="menuitem" data-lang-key="contact">Kontakt</a></li>
+                <li role="none">
+                    <button class="theme-toggle fas fa-sun" onclick="toggleTheme()" aria-label="Toggle theme"></button>
+                </li>
+                <li role="none">
+                    <button class="language-toggle" onclick="toggleLanguage()" aria-label="Toggle language">SR</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <img src="" class="modal-image" id="modalImage" alt="Enlarged project image">
+            <button class="modal-close" aria-label="Close image modal">×</button>
+        </div>
+    </div>
+
+    <main class="container">
+        <section class="section">
+            <h1>Aplikacija za Psihoterapeute</h1>
+            <div class="project-tech">
+                <span class="tech-tag">Java</span>
+                <span class="tech-tag">JavaFX</span>
+                <span class="tech-tag">SQL</span>
+            </div>
+            <p class="project-description">
+                JavaFX aplikacija dizajnirana za psihoterapeute omogućava zakazivanje seansi, praćenje plaćanja, evidenciju prethodnih i budućih seansi, kao i generisanje statistike za svakog terapeuta. Aplikacija je povezana sa SQL Workbench bazom podataka, pružajući pouzdano upravljanje podacima i intuitivan korisnički interfejs.
+            </p>
+            <div class="project-images">
+                <img src="psychotherapist-app-session.jpg" class="project-image" alt="Session scheduling interface">
+                <img src="psychotherapist-app-stats.jpg" class="project-image" alt="Therapist statistics dashboard">
+                <img src="psychotherapist-app-payment.jpg" class="project-image" alt="Payment tracking interface">
+            </div>
+            <div class="project-links">
+                <a href="https://github.com/Vaske10024/UvodUBazeProjekat" class="project-link" target="_blank">GitHub</a>
+                <a href="index.html#projects" class="project-link">Back to Projects</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html#about" data-lang-key="about">O meni</a>
+                <a href="index.html#skills" data-lang-key="skills">Veštine</a>
+                <a href="index.html#projects" data-lang-key="projects">Projekti</a>
+                <a href="courses.html" data-lang-key="courses">Kursevi</a>
+                <a href="index.html#contact" data-lang-key="contact">Kontakt</a>
+            </div>
+            <div class="footer-copyright">
+                © 2025 Vasilije Stanković. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const translations = {
+            en: {
+                home: "Home",
+                about: "About",
+                skills: "Skills",
+                projects: "Projects",
+                courses: "Courses",
+                contact: "Contact"
+            },
+            sr: {
+                home: "Početna",
+                about: "O meni",
+                skills: "Veštine",
+                projects: "Projekti",
+                courses: "Kursevi",
+                contact: "Kontakt"
+            }
+        };
+
+        let currentLang = 'sr';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'sr' ? 'en' : 'sr';
+            document.querySelector('.language-toggle').textContent = currentLang.toUpperCase();
+            document.querySelectorAll('[data-lang-key]').forEach(element => {
+                const key = element.getAttribute('data-lang-key');
+                element.textContent = translations[currentLang][key];
+            });
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.querySelector('.theme-toggle');
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                themeToggle.classList.remove('fa-moon');
+                themeToggle.classList.add('fa-sun');
+            } else {
+                body.classList.add('light-mode');
+                body.classList.remove('mode2');
+                themeToggle.classList.remove('fa-sun');
+                themeToggle.classList.add('fa-moon');
+            }
+        }
+
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', hamburger.classList.contains('active'));
+        });
+
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', false);
+            });
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalClose = document.querySelector('.modal-close');
+        const projectImages = document.querySelectorAll('.project-image');
+
+        projectImages.forEach(image => {
+            image.addEventListener('click', () => {
+                modalImage.src = image.src;
+                modalImage.alt = image.alt;
+                modal.classList.add('active');
+            });
+        });
+
+        modalClose.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
