@@ -574,6 +574,38 @@
             transition: transform 0.5s ease, max-height 0.5s ease;
         }
 
+        .project-card.featured {
+            border: 1px solid rgba(0, 255, 136, 0.8);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.25), inset 0 0 20px rgba(0, 255, 136, 0.06);
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.14), rgba(0, 255, 136, 0.04));
+        }
+
+        .project-card.featured::before {
+            content: "Top projekat";
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            z-index: 1;
+        }
+
+        body.mode2 .project-card.featured {
+            border: 1px solid var(--mode2-text);
+            box-shadow: none;
+            background: rgba(0, 255, 0, 0.08);
+        }
+
+        body.mode2 .project-card.featured::before {
+            background: var(--mode2-accent);
+            color: #000;
+        }
+
         .project-card.active {
             transform: scale(1.05);
             max-height: 600px;
@@ -1179,6 +1211,90 @@
         <p class="typing">Više detalja uskoro...</p>
     </div>
 </div>
+            <div class="project-card card featured" style="--card-index: 5;" onclick="toggleDetails(this)" tabindex="0">
+                <h3>EcoTravelProject</h3>
+                <div class="project-tech">
+                    <span class="tech-tag" style="--tag-index: 1;">Java</span>
+                    <span class="tech-tag" style="--tag-index: 2;">Spring Boot</span>
+                    <span class="tech-tag" style="--tag-index: 3;">PostgreSQL</span>
+                </div>
+                <p class="project-text typing">Web platforma za planiranje održivih putovanja uz fokus na eco-friendly destinacije i optimizaciju rute. <a href="https://github.com/Vaske10024/EcoTravelProject" target="_blank">GitHub</a> | <a href="project-ecotravel.html" target="_blank">Detalji</a></p>
+                <div class="project-details">
+                    <p class="typing">Više detalja uskoro...</p>
+                </div>
+            </div>
+            <div class="project-card card featured" style="--card-index: 6;" onclick="toggleDetails(this)" tabindex="0">
+                <h3>Transcriber-desktop-app</h3>
+                <div class="project-tech">
+                    <span class="tech-tag" style="--tag-index: 1;">Python</span>
+                    <span class="tech-tag" style="--tag-index: 2;">Desktop UI</span>
+                    <span class="tech-tag" style="--tag-index: 3;">Speech-to-Text</span>
+                </div>
+                <p class="project-text typing">Desktop aplikacija za automatsku transkripciju audio sadržaja sa naglaskom na brz workflow i lokalnu obradu. <a href="https://github.com/Vaske10024/Transcriber-desktop-app" target="_blank">GitHub</a> | <a href="project-transcriber.html" target="_blank">Detalji</a></p>
+                <div class="project-details">
+                    <p class="typing">Više detalja uskoro...</p>
+                </div>
+            </div>
+            <div class="project-card card featured" style="--card-index: 7;" onclick="toggleDetails(this)" tabindex="0">
+                <h3>StudentServiceServer</h3>
+                <div class="project-tech">
+                    <span class="tech-tag" style="--tag-index: 1;">Java</span>
+                    <span class="tech-tag" style="--tag-index: 2;">Spring</span>
+                    <span class="tech-tag" style="--tag-index: 3;">REST API</span>
+                </div>
+                <p class="project-text typing">Serverski deo sistema za studentske servise koji upravlja korisnicima, zahtevima i akademskim podacima kroz REST endpoint-e. <a href="https://github.com/Vaske10024/StudentServiceServer" target="_blank">GitHub</a> | <a href="project-student-service-server.html" target="_blank">Detalji</a></p>
+                <div class="project-details">
+                    <p class="typing">Više detalja uskoro...</p>
+                </div>
+            </div>
+            <div class="project-card card" style="--card-index: 8;" onclick="toggleDetails(this)" tabindex="0">
+                <h3>DesktopClientStudentService</h3>
+                <div class="project-tech">
+                    <span class="tech-tag" style="--tag-index: 1;">JavaFX</span>
+                    <span class="tech-tag" style="--tag-index: 2;">HTTP Client</span>
+                    <span class="tech-tag" style="--tag-index: 3;">MVC</span>
+                </div>
+                <p class="project-text typing">Desktop klijent za rad sa StudentServiceServer backend-om, sa modulima za pregled i upravljanje studentskim podacima. <a href="https://github.com/Vaske10024/DesktopClientStudentService" target="_blank">GitHub</a> | <a href="project-desktop-client-student-service.html" target="_blank">Detalji</a></p>
+                <div class="project-details">
+                    <p class="typing">Više detalja uskoro...</p>
+                </div>
+            </div>
+            <div class="project-card card" style="--card-index: 9;" onclick="toggleDetails(this)" tabindex="0">
+                <h3>Piwo</h3>
+                <div class="project-tech">
+                    <span class="tech-tag" style="--tag-index: 1;">Java</span>
+                    <span class="tech-tag" style="--tag-index: 2;">OOP</span>
+                    <span class="tech-tag" style="--tag-index: 3;">CLI</span>
+                </div>
+                <p class="project-text typing">Projektni rad fokusiran na strukture podataka i poslovnu logiku kroz modularnu aplikaciju sa čistom arhitekturom. <a href="https://github.com/Vaske10024/Piwo" target="_blank">GitHub</a> | <a href="project-piwo.html" target="_blank">Detalji</a></p>
+                <div class="project-details">
+                    <p class="typing">Više detalja uskoro...</p>
+                </div>
+            </div>
+            <div class="project-card card" style="--card-index: 10;" onclick="toggleDetails(this)" tabindex="0">
+                <h3>UvodUBazeProjekat</h3>
+                <div class="project-tech">
+                    <span class="tech-tag" style="--tag-index: 1;">SQL</span>
+                    <span class="tech-tag" style="--tag-index: 2;">JavaFX</span>
+                    <span class="tech-tag" style="--tag-index: 3;">Database Design</span>
+                </div>
+                <p class="project-text typing">Aplikacija za rad sa relacionom bazom podataka kroz evidenciju, upite i prikaz ključnih izveštaja. <a href="https://github.com/Vaske10024/UvodUBazeProjekat" target="_blank">GitHub</a> | <a href="project-uvod-u-baze.html" target="_blank">Detalji</a></p>
+                <div class="project-details">
+                    <p class="typing">Više detalja uskoro...</p>
+                </div>
+            </div>
+            <div class="project-card card" style="--card-index: 11;" onclick="toggleDetails(this)" tabindex="0">
+                <h3>dsw-projekat-main</h3>
+                <div class="project-tech">
+                    <span class="tech-tag" style="--tag-index: 1;">Java</span>
+                    <span class="tech-tag" style="--tag-index: 2;">JavaFX</span>
+                    <span class="tech-tag" style="--tag-index: 3;">Design Patterns</span>
+                </div>
+                <p class="project-text typing">Desktop projekat sa fokusom na objektno-orijentisani dizajn, GUI komponente i primenu standardnih softverskih obrazaca. <a href="https://github.com/Vaske10024/dsw-projekat-main" target="_blank">GitHub</a> | <a href="project-dsw.html" target="_blank">Detalji</a></p>
+                <div class="project-details">
+                    <p class="typing">Više detalja uskoro...</p>
+                </div>
+            </div>
         </section>
         <section class="section" id="contact">
             <h2 data-lang-key="contact">Kontakt</h2>
